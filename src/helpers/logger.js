@@ -54,7 +54,7 @@ log4js.configure({
     },
 });
 
-const clearLog = async () => {
+const clearLogs = async () => {
     await fs.remove(projectRoot, './log');
 };
 
@@ -62,7 +62,7 @@ const logHelpers = {
     appLogger: log4js.getLogger('application'),
     ctxLogger: log4js.getLogger('context'),
     logger: log4js.getLogger('console'),
-    clearLog,
+    clearLogs,
 };
 
 const loggerHelper = server => {
