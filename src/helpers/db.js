@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const dbConfig = require('../../configs/db');
-const { User } = require('../models');
 
 const dbHelper = async server => {
     const { dbName, host, port } = dbConfig;
     const { appLogger } = server;
-    const connectAddr = chalk.green.underline(
-        `mongodb://${host}:${port}/${dbName}`
-    );
+    const connectAddr = `mongodb://${host}:${port}/${dbName}`;
+    const colorizedAddr = chalk.green.underline(connectAddr);
 
     try {
         await mongoose.connect(connectAddr, {
@@ -16,17 +14,17 @@ const dbHelper = async server => {
             useUnifiedTopology: true,
         });
     } catch (err) {
-        appLogger.error(`Connect to mongoDB at ${connectAddr} failed!`);
+        appLogger.error(`Connect to mongoDB at ${colorizedAddr} failed!`);
         if (err) appLogger.error(err);
     }
 
-    appLogger.info(`Connected to mongoDB at ${connectAddr} success!`);
+    appLogger.info(`Connected to mongoDB at ${colorizedAddr} success!`);
 
     const db = mongoose.connection;
 
     db.on('close', () => {
         appLogger.warn(
-            `MongoDB connection to at ${connectAddr} had been closed!`
+            `MongoDB connection to at ${colorizedAddr} had been closed!`
         );
     });
 
