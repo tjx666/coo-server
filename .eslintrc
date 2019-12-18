@@ -17,6 +17,8 @@
         "prettier/prettier": "off",
 
         "no-console": "off",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-param-reassign": "off",
+        "func-names": "off"
     }
 }
