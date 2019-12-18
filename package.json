@@ -39,17 +39,19 @@
         ]
     },
     "dependencies": {
+        "@hapi/boom": "^8.0.1",
+        "@hapi/joi": "^16.1.8",
         "chalk": "^3.0.0",
         "cross-env": "^6.0.3",
         "fs-extra": "^8.1.0",
         "inquirer": "^7.0.1",
-        "jest": "^24.9.0",
         "koa": "^2.11.0",
         "koa-bodyparser": "^4.2.1",
         "koa-logger": "^3.2.1",
         "koa-router": "^7.4.0",
         "lodash": "^4.17.15",
         "log4js": "^6.1.0",
+        "mocha": "^6.2.2",
         "mongoose": "^5.8.1",
         "require-dir": "^1.2.0",
         "yargs": "^15.0.2"
