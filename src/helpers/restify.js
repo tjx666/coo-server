@@ -8,13 +8,12 @@ const restifyHelper = server => {
         };
 
         const statusMapper = new Map([
-            ['GET', 200],
             ['POST', 201],
             ['DELETE', 204],
         ]);
 
         if (!status) {
-            status = statusMapper.get(method);
+            status = statusMapper.get(method) || 200;
         }
         this.status = status;
     };

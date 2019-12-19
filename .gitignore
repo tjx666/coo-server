@@ -1,3 +1,6 @@
+# custom
+study/
+
 # Logs
 logs
 *.log
@@ -261,7 +264,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*

@@ -3,8 +3,7 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
         try {
             await next();
         } catch (err) {
-            // ctx.ctxLogger.error(err);
-            console.log(err);
+            ctx.ctxLogger.error(err);
             const {
                 code,
                 msg,
@@ -16,7 +15,6 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
             } = err;
             if (ctx.request.url.startsWith(apiPrefix)) {
                 if (err.isBoom) {
-                    // using Boom
                     ctx.response.status = output.statusCode || 500;
                     ctx.response.body = {
                         code: (data && data.code) || ctx.response.status,
@@ -27,7 +25,6 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
                             output.payload.error,
                     };
                 } else {
-                    // using ctx.throw or others
                     ctx.response.status = status || statusCode || 500;
                     ctx.response.body = {
                         code: code || ctx.response.status,

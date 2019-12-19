@@ -19,15 +19,21 @@ log4js.configure({
             filename: ctxLogPath,
         },
         appErrorFile: {
-            type: 'logLevelFilter',
-            appender: 'appFile',
+            type: 'dateFile',
             filename: appErrorLogPath,
-            level: 'error',
         },
         ctxErrorFile: {
-            type: 'logLevelFilter',
-            appender: 'ctxFile',
+            type: 'dateFile',
             filename: ctxErrorLogPath,
+        },
+        appErrorFilter: {
+            type: 'logLevelFilter',
+            appender: 'appErrorFile',
+            level: 'error',
+        },
+        ctxErrorFilter: {
+            type: 'logLevelFilter',
+            appender: 'ctxErrorFile',
             level: 'error',
         },
         console: {
@@ -44,11 +50,11 @@ log4js.configure({
             level: 'trace',
         },
         application: {
-            appenders: ['console', 'appFile', 'appErrorFile'],
+            appenders: ['console', 'appFile', 'appErrorFilter'],
             level: 'trace',
         },
         context: {
-            appenders: ['console', 'ctxFile', 'ctxErrorFile'],
+            appenders: ['console', 'ctxFile', 'ctxErrorFilter'],
             level: 'trace',
         },
     },

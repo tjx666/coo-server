@@ -47,9 +47,9 @@ const start = async () => {
         })
     );
 
-    const { HOST, PORT } = serverConfig;
-    server.listen(PORT, HOST, () => {
-        const serverAddr = `http://${HOST}:${PORT}`;
+    const { hostname, port } = serverConfig;
+    server.listen(port, hostname, () => {
+        const serverAddr = `http://${hostname}:${port}`;
         appLogger.info(
             `Server is successfully running at ${chalk.green.underline(
                 serverAddr

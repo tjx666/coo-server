@@ -3,8 +3,8 @@ const Boom = require('@hapi/boom');
 const validate = async function(schema, validateQuery, isAsync = false) {
     const ctx = this;
     const { method, query, body } = ctx.request;
-
     const validatedData = method === 'GET' || validateQuery ? query : body;
+
     let result;
     if (isAsync) {
         try {
@@ -19,6 +19,8 @@ const validate = async function(schema, validateQuery, isAsync = false) {
             throw Boom.badRequest(result.error.details.message);
         }
     }
+
+    return validatedData;
 };
 
 const validateAsync = function async(schema, validateQuery) {

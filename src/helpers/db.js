@@ -3,9 +3,9 @@ const chalk = require('chalk');
 const dbConfig = require('../../configs/db');
 
 const dbHelper = async server => {
-    const { dbName, host, port } = dbConfig;
+    const { dbName, hostname, port } = dbConfig;
     const { appLogger } = server;
-    const connectAddr = `mongodb://${host}:${port}/${dbName}`;
+    const connectAddr = `mongodb://${hostname}:${port}/${dbName}`;
     const colorizedAddr = chalk.green.underline(connectAddr);
 
     try {
@@ -21,6 +21,7 @@ const dbHelper = async server => {
     appLogger.info(`Connected to mongoDB at ${colorizedAddr} success!`);
 
     const db = mongoose.connection;
+    server.context.db = db;
 
     db.on('close', () => {
         appLogger.warn(
