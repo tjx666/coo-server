@@ -1,8 +1,12 @@
 const { argv } = require('yargs');
 
-const serverConfig = {
+exports.server = {
     hostname: argv.HOST || process.env.HOST || '127.0.0.1',
     port: Number(argv.PORT || process.env.PORT || 3000),
 };
 
-module.exports = serverConfig;
+exports.db = {
+    dbName: 'coo',
+    hostname: '127.0.0.1',
+    port: 27017,
+};

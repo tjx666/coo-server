@@ -8,7 +8,9 @@
     "extends": ["airbnb-base", "plugin:prettier/recommended"],
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "SOURCE_TEST_SERVER": "readonly",
+        "TEST_SERVER": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018
@@ -19,6 +21,8 @@
         "no-console": "off",
         "no-unused-vars": "warn",
         "no-param-reassign": "off",
-        "func-names": "off"
+        "func-names": "off",
+        "import/no-dynamic-require": "off",
+        "import/newline-after-import": "off"
     }
 }

@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { User } = require('../models');
 
 const createUser = async userDto => {
