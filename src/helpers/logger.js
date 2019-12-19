@@ -50,6 +50,10 @@ const configuration = {
         },
     },
     categories: {
+        default: {
+            appenders: ['console'],
+            level: 'trace',
+        },
         application: {
             appenders: ['appFile', 'appErrorFilter'],
             level: 'trace',
@@ -63,7 +67,7 @@ const configuration = {
 
 const notProd = ['development', 'test'].includes(process.env.NODE_ENV);
 if (notProd) {
-    configuration.categories.values(categoryConfig => {
+    Object.values(configuration.categories).forEach(categoryConfig => {
         categoryConfig.appenders.push('console');
     });
 }
