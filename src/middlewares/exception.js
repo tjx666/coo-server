@@ -3,7 +3,8 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
         try {
             await next();
         } catch (err) {
-            ctx.appLogger.error(err);
+            // ctx.ctxLogger.error(err);
+            console.log(err);
             const {
                 code,
                 msg,
@@ -18,9 +19,9 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
                     // using Boom
                     ctx.response.status = output.statusCode || 500;
                     ctx.response.body = {
-                        code: data.code || ctx.response.status,
+                        code: (data && data.code) || ctx.response.status,
                         msg:
-                            data.msg ||
+                            (data && data.msg) ||
                             message ||
                             output.payload.message ||
                             output.payload.error,

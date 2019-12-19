@@ -13,9 +13,12 @@ const bodyParser = require('koa-bodyparser');
 const requestLogger = require('koa-logger');
 const chalk = require('chalk');
 const Boom = require('@hapi/boom');
+
 const loggerHelpers = require('./helpers/logger');
 const dbHelper = require('./helpers/db');
 const restifyHelper = require('./helpers/restify');
+const validateHelper = require('./helpers/validate');
+
 const exceptionMiddleware = require('./middlewares/exception');
 const serverConfig = require('../configs/server');
 const router = require('./controllers/v1');
@@ -30,6 +33,7 @@ const start = async () => {
 
     await dbHelper(server);
     await restifyHelper(server);
+    await validateHelper(server);
 
     server.use(requestLogger());
     server.use(bodyParser());

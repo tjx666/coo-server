@@ -3,7 +3,7 @@ const { User } = require('../models');
 
 const createUser = async userDto => {
     const newUser = new User(userDto);
-    await newUser.save().exec();
+    await newUser.save();
 };
 
 const findAllUsers = async (allFields = false) => {

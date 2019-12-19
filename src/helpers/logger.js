@@ -26,7 +26,7 @@ log4js.configure({
         },
         ctxErrorFile: {
             type: 'logLevelFilter',
-            appender: 'ctxErrorDateFile',
+            appender: 'ctxFile',
             filename: ctxErrorLogPath,
             level: 'error',
         },

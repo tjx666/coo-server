@@ -1,7 +1,25 @@
+const Koa = require('koa');
 const Boom = require('@hapi/boom');
 
-try {
-    throw Boom.badGateway('未认证');
-} catch (err) {
-    console.error(err.message);
-}
+const server = new Koa();
+const Router = require('koa-router');
+
+const router = new Router();
+
+server.use(async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.get('/', (ctx, next) => {
+    throw Boom.badRequest();
+});
+
+server.use(router.routes());
+
+server.listen(3001, 'localhost', () => {
+    console.log('server started!');
+});
