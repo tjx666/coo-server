@@ -6,23 +6,43 @@
 //   _// \\      \\         \\
 //  (__)(__)    (__)       (__)
 
-/* eslint-disable new-cap */
+const env = process.env.NODE_ENV;
+
 const chalk = require('chalk');
-const { server: serverConfig } = require('../configs/development.config');
-const bootstrap = require('./server');
+const config = require(`../configs/${env}.config`);
+const bootstrap = require('./bootstrap');
 
-const start = async () => {
-    const server = await bootstrap();
-    const { hostname, port } = serverConfig;
+const listen = server => {
+    return new Promise((resolve, reject) => {
+        const { hostname, port } = config.server;
+        const listeningServer = server.listen(port, hostname, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
 
-    server.listen(port, hostname, () => {
-        const serverAddr = `http://${hostname}:${port}`;
-        server.appLogger.info(
-            `Server is successfully running at ${chalk.green.underline(
-                serverAddr
-            )}`
-        );
+            const serverAddr = `http://${hostname}:${port}`;
+            server.appLogger.info(
+                `Server is successfully running at ${chalk.green.underline(
+                    serverAddr
+                )}`
+            );
+            resolve(listeningServer);
+        });
     });
 };
 
-start();
+const start = async () => {
+    const server = await bootstrap();
+    const listeningServer = await listen(server);
+    return {
+        listeningServer,
+        server,
+    };
+};
+
+if (env !== 'test') {
+    start();
+} else {
+    module.exports = start;
+}

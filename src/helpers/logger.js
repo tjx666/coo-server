@@ -3,12 +3,17 @@ const log4js = require('log4js');
 const fs = require('fs-extra');
 
 const projectRoot = resolve(__dirname, '../../');
+
+const clearLogs = async () => {
+    await fs.remove(projectRoot, './log');
+};
+
 const appLogPath = resolve(projectRoot, './logs/application.log');
 const ctxLogPath = resolve(projectRoot, './logs/context.log');
 const appErrorLogPath = resolve(projectRoot, './logs/application.error.log');
 const ctxErrorLogPath = resolve(projectRoot, './logs/context.error.log');
 
-log4js.configure({
+const configuration = {
     appenders: {
         appFile: {
             type: 'dateFile',
@@ -45,24 +50,24 @@ log4js.configure({
         },
     },
     categories: {
-        default: {
-            appenders: ['console'],
-            level: 'trace',
-        },
         application: {
-            appenders: ['console', 'appFile', 'appErrorFilter'],
+            appenders: ['appFile', 'appErrorFilter'],
             level: 'trace',
         },
         context: {
-            appenders: ['console', 'ctxFile', 'ctxErrorFilter'],
+            appenders: ['ctxFile', 'ctxErrorFilter'],
             level: 'trace',
         },
     },
-});
-
-const clearLogs = async () => {
-    await fs.remove(projectRoot, './log');
 };
+
+const notProd = ['development', 'test'].includes(process.env.NODE_ENV);
+if (notProd) {
+    configuration.categories.values(categoryConfig => {
+        categoryConfig.appenders.push('console');
+    });
+}
+log4js.configure(configuration);
 
 const logHelpers = {
     appLogger: log4js.getLogger('application'),
