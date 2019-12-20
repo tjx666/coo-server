@@ -22,6 +22,8 @@
         "no-unused-vars": "warn",
         "no-param-reassign": "off",
         "func-names": "off",
+        "global-require": "off",
+
         "import/no-dynamic-require": "off",
         "import/newline-after-import": "off"
     }

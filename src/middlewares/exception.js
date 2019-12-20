@@ -1,4 +1,4 @@
-const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
+const exceptionMiddleware = ({ apiPrefix = '/api/v' } = {}) => {
     return async (ctx, next) => {
         try {
             await next();
@@ -13,6 +13,7 @@ const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
                 output,
                 data,
             } = err;
+
             if (ctx.request.url.startsWith(apiPrefix)) {
                 if (err.isBoom) {
                     ctx.response.status = output.statusCode || 500;

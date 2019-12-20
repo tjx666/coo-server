@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
-const config = require(`../../configs/${process.env.NODE_ENV}.config`);
+const config = require(`../../configs`);
 
 const dbHelper = async server => {
     const { dbName, hostname, port } = config.db;
@@ -15,7 +15,9 @@ const dbHelper = async server => {
             useUnifiedTopology: true,
         });
     } catch (err) {
-        appLogger.error(`Connect to mongoDB at ${colorizedAddr} failed!`);
+        appLogger.error(
+            `Connect to mongoDB at ${colorizedAddr} failed ${logSymbols.error}`
+        );
         if (err) appLogger.error(err);
     }
 
@@ -29,7 +31,7 @@ const dbHelper = async server => {
 
     db.on('close', () => {
         appLogger.warn(
-            `MongoDB connection to at ${colorizedAddr} had been closed!`
+            `MongoDB connection to at ${colorizedAddr} had been closed ${logSymbols.warning}`
         );
     });
 

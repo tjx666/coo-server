@@ -1,12 +1,12 @@
-const { argv } = require('yargs');
+const _ = require('lodash');
+const devConfig = require('./development.config');
 
 exports.server = {
-    hostname: argv.HOST || process.env.HOST || '127.0.0.1',
-    port: Number(argv.PORT || process.env.PORT || 3001),
+    port: 3001,
 };
 
 exports.db = {
     dbName: 'coo-test',
-    hostname: '127.0.0.1',
-    port: 27017,
 };
+
+module.exports = _.merge(devConfig, exports);

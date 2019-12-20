@@ -6,12 +6,10 @@
 //   _// \\      \\         \\
 //  (__)(__)    (__)       (__)
 
-const env = process.env.NODE_ENV;
-
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
-const config = require(`../configs/${env}.config`);
 const bootstrap = require('./bootstrap');
+const config = require(`../configs`);
 
 const listen = server => {
     return new Promise((resolve, reject) => {
@@ -41,7 +39,7 @@ const start = async () => {
     };
 };
 
-if (env !== 'test') {
+if (require('../utils/env').env !== 'test') {
     start();
 } else {
     module.exports = start;

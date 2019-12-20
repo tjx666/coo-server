@@ -1,11 +1,11 @@
 const { resolve } = require('path');
 const log4js = require('log4js');
 const fs = require('fs-extra');
+const { isProd } = require('../../utils/env');
 
 const projectRoot = resolve(__dirname, '../../');
-
 const clearLogs = async () => {
-    await fs.remove(projectRoot, './log');
+    await fs.remove(projectRoot, './logs');
 };
 
 const appLogPath = resolve(projectRoot, './logs/application.log');
@@ -55,25 +55,23 @@ const configuration = {
             level: 'trace',
         },
         application: {
-            appenders: ['appFile', 'appErrorFilter'],
+            appenders: ['console', 'appFile', 'appErrorFilter'],
             level: 'trace',
         },
         context: {
-            appenders: ['ctxFile', 'ctxErrorFilter'],
+            appenders: ['console', 'ctxFile', 'ctxErrorFilter'],
             level: 'trace',
         },
     },
 };
-
-const notProd = ['development', 'test'].includes(process.env.NODE_ENV);
-if (notProd) {
-    Object.values(configuration.categories).forEach(categoryConfig => {
-        categoryConfig.appenders.push('console');
-    });
+if (isProd) {
+    Object.values(configuration.categories).forEach(config =>
+        config.appenders.shift()
+    );
 }
 log4js.configure(configuration);
 
-const logHelpers = {
+const helpers = {
     appLogger: log4js.getLogger('application'),
     ctxLogger: log4js.getLogger('context'),
     logger: log4js.getLogger('console'),
@@ -81,8 +79,8 @@ const logHelpers = {
 };
 
 const loggerHelper = server => {
-    Object.assign(server, logHelpers);
-    Object.assign(server.context, logHelpers);
+    Object.assign(server, helpers);
+    Object.assign(server.context, helpers);
 };
 
 module.exports = loggerHelper;
