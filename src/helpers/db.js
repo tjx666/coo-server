@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
+const logSymbols = require('log-symbols');
 const config = require(`../../configs/${process.env.NODE_ENV}.config`);
 
 const dbHelper = async server => {
@@ -18,7 +19,9 @@ const dbHelper = async server => {
         if (err) appLogger.error(err);
     }
 
-    appLogger.info(`Connected to mongoDB at ${colorizedAddr} success!`);
+    appLogger.info(
+        `Connected to mongoDB at ${colorizedAddr} ${logSymbols.success}`
+    );
 
     const db = mongoose.connection;
     server.db = db;

@@ -9,6 +9,9 @@
 /* eslint-disable new-cap */
 
 const Koa = require('koa');
+const responseTime = require('koa-response-time');
+const helmet = require('koa-helmet');
+const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const requestLogger = require('koa-logger');
 const chalk = require('chalk');
@@ -35,7 +38,10 @@ const bootstrap = async () => {
     await restifyHelper(server);
     await validateHelper(server);
 
+    server.use(responseTime());
     if (env === 'development') server.use(requestLogger());
+    server.use(helmet());
+    server.use(cors());
     server.use(bodyParser());
     server.use(exceptionMiddleware());
     server.use(router.routes());

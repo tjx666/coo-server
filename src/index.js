@@ -9,6 +9,7 @@
 const env = process.env.NODE_ENV;
 
 const chalk = require('chalk');
+const logSymbols = require('log-symbols');
 const config = require(`../configs/${env}.config`);
 const bootstrap = require('./bootstrap');
 
@@ -23,9 +24,8 @@ const listen = server => {
 
             const serverAddr = `http://${hostname}:${port}`;
             server.appLogger.info(
-                `Server is successfully running at ${chalk.green.underline(
-                    serverAddr
-                )}`
+                // prettier-ignore
+                `Server is running at ${chalk.green.underline(serverAddr)} ${logSymbols.success}`
             );
             resolve(listeningServer);
         });
