@@ -22,7 +22,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "lint-staged && yarn run test"
         }
     },
     "lint-staged": {
@@ -37,7 +37,9 @@
     "dependencies": {
         "@hapi/boom": "^8.0.1",
         "@hapi/joi": "^16.1.8",
+        "@sindresorhus/is": "^1.2.0",
         "chalk": "^3.0.0",
+        "cron": "^1.7.2",
         "cross-env": "^6.0.3",
         "fs-extra": "^8.1.0",
         "inquirer": "^7.0.1",
@@ -53,6 +55,8 @@
         "nyc": "^14.1.1",
         "power-assert": "^1.6.1",
         "require-dir": "^1.2.0",
+        "sinon": "^7.5.0",
+        "socket.io": "^2.3.0",
         "supertest": "^4.0.2",
         "yargs": "^15.0.2"
     },

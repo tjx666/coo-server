@@ -10,7 +10,6 @@ const validate = async function(schema, validateQuery, isAsync = false) {
         try {
             result = await schema.validateAsync(validatedData);
         } catch (error) {
-            console.log('错误', error);
             throw Boom.badRequest(error.details[0].message);
         }
     } else {
