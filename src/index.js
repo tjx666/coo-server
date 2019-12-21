@@ -33,6 +33,11 @@ const listen = server => {
 const start = async () => {
     const server = await bootstrap();
     const listeningServer = await listen(server);
+
+    process.on('unhandledRejection', err => {
+        server.appLogger.error(err);
+    });
+
     return {
         listeningServer,
         server,

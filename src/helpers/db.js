@@ -1,19 +1,17 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
+
 const config = require(`../../configs`);
 
 const dbHelper = async server => {
-    const { dbName, hostname, port } = config.db;
+    const { dbName, hostname, port, connectOptions } = config.db;
     const { appLogger } = server;
     const connectAddr = `mongodb://${hostname}:${port}/${dbName}`;
     const colorizedAddr = chalk.green.underline(connectAddr);
 
     try {
-        await mongoose.connect(connectAddr, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(connectAddr, connectOptions);
     } catch (err) {
         appLogger.error(
             `Connect to mongoDB at ${colorizedAddr} failed ${logSymbols.error}`

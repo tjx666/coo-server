@@ -1,20 +1,19 @@
-const exceptionMiddleware = ({ apiPrefix = '/api/v' } = {}) => {
+const exceptionMiddleware = ({ apiPrefix = '/api/' } = {}) => {
     return async (ctx, next) => {
         try {
             await next();
         } catch (err) {
-            ctx.ctxLogger.error(err);
-            const {
-                code,
-                msg,
-                message,
-                status,
-                statusCode,
-                output,
-                data,
-            } = err;
-
             if (ctx.request.url.startsWith(apiPrefix)) {
+                ctx.ctxLogger.error(err);
+                const {
+                    code,
+                    msg,
+                    message,
+                    status,
+                    statusCode,
+                    output,
+                    data,
+                } = err;
                 if (err.isBoom) {
                     ctx.response.status = output.statusCode || 500;
                     ctx.response.body = {
@@ -35,6 +34,8 @@ const exceptionMiddleware = ({ apiPrefix = '/api/v' } = {}) => {
                             'An internal server error occurred',
                     };
                 }
+            } else {
+                throw err;
             }
         }
     };

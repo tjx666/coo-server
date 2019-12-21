@@ -9,8 +9,7 @@
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
-        "SOURCE_TEST_SERVER": "readonly",
-        "TEST_SERVER": "readonly"
+        "request": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018
@@ -23,8 +22,8 @@
         "no-param-reassign": "off",
         "func-names": "off",
         "global-require": "off",
+        "no-underscore-dangle": "off",
 
-        "import/no-dynamic-require": "off",
         "import/newline-after-import": "off"
     }
 }

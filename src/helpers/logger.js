@@ -1,13 +1,16 @@
 const { resolve } = require('path');
+const { promisify } = require('util');
 const log4js = require('log4js');
-const fs = require('fs-extra');
+const rm = require('rimraf');
+
 const { isProd } = require('../../utils/env');
 
 const projectRoot = resolve(__dirname, '../../');
 const clearLogs = async () => {
-    await fs.remove(projectRoot, './logs');
+    await promisify(rm)(resolve(projectRoot, './logs'));
 };
 
+clearLogs();
 const appLogPath = resolve(projectRoot, './logs/application.log');
 const ctxLogPath = resolve(projectRoot, './logs/context.log');
 const appErrorLogPath = resolve(projectRoot, './logs/application.error.log');
@@ -65,9 +68,9 @@ const configuration = {
     },
 };
 if (isProd) {
-    Object.values(configuration.categories).forEach(config =>
-        config.appenders.shift()
-    );
+    Object.values(configuration.categories)
+        .slice(1)
+        .forEach(config => config.appenders.shift());
 }
 log4js.configure(configuration);
 
@@ -82,5 +85,7 @@ const loggerHelper = server => {
     Object.assign(server, helpers);
     Object.assign(server.context, helpers);
 };
+
+loggerHelper.helpers = helpers;
 
 module.exports = loggerHelper;

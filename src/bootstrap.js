@@ -6,6 +6,7 @@ const requestLogger = require('koa-logger');
 const helmet = require('koa-helmet');
 const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
+const jwt = require('koa-jwt');
 const chalk = require('chalk');
 const Boom = require('@hapi/boom');
 
@@ -15,10 +16,12 @@ const restifyHelper = require('./helpers/restify');
 const validateHelper = require('./helpers/validate');
 
 const exceptionMiddleware = require('./middlewares/exception');
+const jwtExceptionMiddleware = require('./middlewares/jwtException');
 
 const router = require('./controllers/v1');
 
 const { env: mode } = require('../utils/env');
+const config = require('../configs');
 
 const bootstrap = async () => {
     const server = new Koa();
@@ -37,6 +40,12 @@ const bootstrap = async () => {
     server.use(cors());
     server.use(bodyParser());
     server.use(exceptionMiddleware());
+    server.use(jwtExceptionMiddleware());
+    server.use(
+        jwt({ secret: config.security.jwtSecret }).unless({
+            path: [/\/api\/v\d\/users\/register/, /\/api\/v\d\/users\/login/],
+        })
+    );
     server.use(router.routes());
     server.use(
         router.allowedMethods({
