@@ -23,7 +23,9 @@
         "func-names": "off",
         "global-require": "off",
         "no-underscore-dangle": "off",
+        "no-unused-expressions": "off",
 
-        "import/newline-after-import": "off"
+        "import/newline-after-import": "off",
+        "import/no-dynamic-require": "off"
     }
 }

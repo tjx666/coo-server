@@ -10,7 +10,6 @@ const clearLogs = async () => {
     await promisify(rm)(resolve(projectRoot, './logs'));
 };
 
-clearLogs();
 const appLogPath = resolve(projectRoot, './logs/application.log');
 const ctxLogPath = resolve(projectRoot, './logs/context.log');
 const appErrorLogPath = resolve(projectRoot, './logs/application.error.log');

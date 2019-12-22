@@ -7,6 +7,7 @@ exports.server = {
 
 exports.security = {
     jwtSecret: 'test_jwt_secret',
+    passwordHashSaltRounds: 15,
 };
 
 exports.db = {

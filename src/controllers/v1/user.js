@@ -1,7 +1,8 @@
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
-const { userService } = require('../../services/');
+
+const { userService } = require('../../services');
 const configs = require('../../../configs');
 
 const register = async (ctx, next) => {
@@ -34,20 +35,23 @@ const login = async (ctx, next) => {
     const user = await userService.checkLogin(name, password);
 
     if (user) {
+        const token = jwt.sign(
+            {
+                data: user,
+                exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
+            },
+            configs.security.jwtSecret
+        );
         ctx.response.body = {
             code: 0,
             msg: 'login success!',
-            data: jwt.sign(
-                {
-                    data: user,
-                    exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
-                },
-                configs.security.jwtSecret
-            ),
+            data: `Bearer ${token}`,
         };
     } else {
         throw Boom.unauthorized();
     }
+
+    // await next();
 };
 
 const getUsers = async (ctx, next) => {

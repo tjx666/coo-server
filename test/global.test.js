@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const logSymbols = require('log-symbols');
 
-const start = require('../src/index');
-const config = require('../configs');
 const { appLogger } = require('../src/helpers/logger').helpers;
 const { userService } = require('../src/services');
 
-before(async () => {
+const start = require('../src/index');
+const config = require('../configs');
+
+before(async function() {
+    this.timeout(10 * 1000);
+
     // destroy old test db
-    const { dbName, hostname, port, connectOptions } = config.db;
-    const conn = await mongoose.createConnection(
-        `mongodb://${hostname}:${port}/${dbName}`,
-        connectOptions
-    );
+    const { dbName, address, connectOptions } = config.db;
+    const conn = await mongoose.createConnection(address, connectOptions);
     await conn.dropDatabase();
     appLogger.info(`Drop old database ${dbName} ${logSymbols.success}`);
 
     // startup server
-    const { listeningServer, server } = await start();
-    global.__test_server__ = server;
+    const { app, server } = await start();
+    global.__test_app__ = app;
 
     // add some test data
     const testUsers = [
@@ -42,18 +42,16 @@ before(async () => {
     await Promise.all(testUsers.map(user => userService.createUser(user)));
 
     // get jwt
-    const resp = await supertest(listeningServer)
+    const resp = await supertest(server)
         .post('/api/v1/users/login')
         .send({ name: 'test', password: 'test' })
         .expect(200);
-    const jwtToken = resp.body.data;
+    const token = resp.body.data;
 
     // setup global request util
-    global.request = supertest
-        .agent(listeningServer)
-        .set('Authorization', `Bearer ${jwtToken}`);
+    global.request = supertest.agent(server).set('Authorization', token);
 });
 
 after(async () => {
-    await global.__test_server__.db.close();
+    await global.__test_app__.db.close();
 });

@@ -7,7 +7,6 @@ const helmet = require('koa-helmet');
 const cors = require('@koa/cors');
 const bodyParser = require('koa-bodyparser');
 const jwt = require('koa-jwt');
-const chalk = require('chalk');
 const Boom = require('@hapi/boom');
 
 const loggerHelpers = require('./helpers/logger');
@@ -20,34 +19,31 @@ const jwtExceptionMiddleware = require('./middlewares/jwtException');
 
 const router = require('./controllers/v1');
 
-const { env: mode } = require('../utils/env');
+const { env } = require('../utils/env');
 const config = require('../configs');
 
 const bootstrap = async () => {
-    const server = new Koa();
+    const app = new Koa();
 
-    await loggerHelpers(server);
-    const { appLogger } = server;
-    appLogger.info(`Startup server under ${chalk.bold.yellow(mode)} mode`);
+    await loggerHelpers(app);
+    await dbHelper(app);
+    await restifyHelper(app);
+    await validateHelper(app);
 
-    await dbHelper(server);
-    await restifyHelper(server);
-    await validateHelper(server);
-
-    server.use(responseTime());
-    if (mode === 'development') server.use(requestLogger());
-    server.use(helmet());
-    server.use(cors());
-    server.use(bodyParser());
-    server.use(exceptionMiddleware());
-    server.use(jwtExceptionMiddleware());
-    server.use(
+    app.use(responseTime());
+    env === 'development' && app.use(requestLogger());
+    app.use(helmet());
+    app.use(cors());
+    app.use(bodyParser());
+    app.use(exceptionMiddleware());
+    app.use(jwtExceptionMiddleware());
+    app.use(
         jwt({ secret: config.security.jwtSecret }).unless({
             path: [/\/api\/v\d\/users\/register/, /\/api\/v\d\/users\/login/],
         })
     );
-    server.use(router.routes());
-    server.use(
+    app.use(router.routes());
+    app.use(
         router.allowedMethods({
             throw: true,
             notImplemented: () => new Boom.notImplemented(),
@@ -55,7 +51,7 @@ const bootstrap = async () => {
         })
     );
 
-    return server;
+    return app;
 };
 
 module.exports = bootstrap;

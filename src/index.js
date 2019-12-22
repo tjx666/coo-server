@@ -6,45 +6,42 @@
 //   _// \\      \\         \\
 //  (__)(__)    (__)       (__)
 
+const { promisify } = require('util');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
+
+const loggerHelpers = require('./helpers/logger');
 const bootstrap = require('./bootstrap');
-const config = require(`../configs`);
+const { env: mode } = require('../utils/env');
+const config = require('../configs');
 
-const listen = server => {
-    return new Promise((resolve, reject) => {
-        const { hostname, port } = config.server;
-        const listeningServer = server.listen(port, hostname, err => {
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            const serverAddr = `http://${hostname}:${port}`;
-            server.appLogger.info(
-                // prettier-ignore
-                `Server is running at ${chalk.green.underline(serverAddr)} ${logSymbols.success}`
-            );
-            resolve(listeningServer);
-        });
-    });
-};
+const { appLogger } = loggerHelpers.helpers;
 
 const start = async () => {
-    const server = await bootstrap();
-    const listeningServer = await listen(server);
+    appLogger.info(`Startup server under ${chalk.bold.yellow(mode)} mode`);
 
-    process.on('unhandledRejection', err => {
-        server.appLogger.error(err);
-    });
+    const app = await bootstrap();
+    const { hostname, port, address } = config.server;
+    const server = await promisify(cb => {
+        const httServer = app.listen(port, hostname, err => cb(err, httServer));
+    })();
+
+    // prettier-ignore
+    app.appLogger.info(
+        `Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`
+    );
 
     return {
-        listeningServer,
+        app,
         server,
     };
 };
 
-if (require('../utils/env').env !== 'test') {
+process.on('unhandledRejection', err => {
+    appLogger.error(err);
+});
+
+if (mode !== 'test') {
     start();
 } else {
     module.exports = start;
