@@ -1,10 +1,9 @@
-//     ____   U  ___ u   U  ___ u
-//  U /"___|   \/"_ \/    \/"_ \/
-//  \| | u     | | | |    | | | |
-//   | |/__.-,_| |_| |.-,_| |_| |
-//    \____|\_)-\___/  \_)-\___/
-//   _// \\      \\         \\
-//  (__)(__)    (__)       (__)
+//     __                  ____  _____________________      __   __          _ __                __      __
+//    / /______  ____ _   / __ \/ ____/ ___/_  __/ __/_  __/ /  / /_  ____  (_) /__  _________  / /___ _/ /____
+//   / //_/ __ \/ __ `/  / /_/ / __/  \__ \ / / / /_/ / / / /  / __ \/ __ \/ / / _ \/ ___/ __ \/ / __ `/ __/ _ \
+//  / ,< / /_/ / /_/ /  / _, _/ /___ ___/ // / / __/ /_/ / /  / /_/ / /_/ / / /  __/ /  / /_/ / / /_/ / /_/  __/
+// /_/|_|\____/\__,_/  /_/ |_/_____//____//_/ /_/  \__,_/_/  /_.___/\____/_/_/\___/_/  / .___/_/\__,_/\__/\___/
+//                                                                                    /_/
 
 const { promisify } = require('util');
 const chalk = require('chalk');
@@ -18,7 +17,7 @@ const config = require('../configs');
 const { appLogger } = loggerHelpers.helpers;
 
 const start = async () => {
-    appLogger.info(`Startup server under ${chalk.bold.yellow(mode)} mode`);
+    appLogger.info(`Startup server under ${chalk.bold.yellow(mode.toUpperCase())} mode`);
 
     const app = await bootstrap();
     const { hostname, port, address } = config.server;
@@ -26,10 +25,7 @@ const start = async () => {
         const httServer = app.listen(port, hostname, err => cb(err, httServer));
     })();
 
-    // prettier-ignore
-    app.appLogger.info(
-        `Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`
-    );
+    app.appLogger.info(`Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`);
 
     return {
         app,

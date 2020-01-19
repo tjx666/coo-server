@@ -1,14 +1,12 @@
 const bcrypt = require('bcrypt');
+
 const { User } = require('../models');
 const configs = require('../../configs');
 
 const defaultHideFields = '-_id -__v';
 
 const createUser = async userDto => {
-    const hashedPassword = await bcrypt.hash(
-        userDto.password,
-        configs.security.passwordHashSaltRounds
-    );
+    const hashedPassword = await bcrypt.hash(userDto.password, configs.security.passwordHashSaltRounds);
     const newUser = new User({ ...userDto, password: hashedPassword });
 
     await newUser.save();
