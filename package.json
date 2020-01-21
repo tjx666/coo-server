@@ -36,7 +36,7 @@
     },
     "dependencies": {
         "@hapi/boom": "^9.0.0",
-        "@hapi/joi": "^17.0.2",
+        "@hapi/joi": "^17.1.0",
         "@koa/cors": "^3.0.0",
         "bcrypt": "3.0.6",
         "chalk": "^3.0.0",
@@ -54,7 +54,7 @@
         "log-symbols": "^3.0.0",
         "log4js": "^6.1.0",
         "mocha": "^7.0.0",
-        "mongoose": "^5.8.7",
+        "mongoose": "^5.8.9",
         "power-assert": "^1.6.1",
         "require-dir": "^1.2.0",
         "rimraf": "^3.0.0",
@@ -70,7 +70,7 @@
         "eslint-plugin-import": "^2.20.0",
         "eslint-plugin-prettier": "^3.1.2",
         "husky": "^4.0.10",
-        "lint-staged": "^9.5.0",
+        "lint-staged": "^10.0.1",
         "nodemon": "^2.0.2",
         "prettier": "^1.19.1"
     }

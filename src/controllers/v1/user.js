@@ -5,59 +5,70 @@ const jwt = require('jsonwebtoken');
 const { userService } = require('../../services');
 const configs = require('../../../configs');
 
-const register = async (ctx, next) => {
+function generateJWT(user) {
+    const token = jwt.sign(
+        {
+            data: user,
+            exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
+        },
+        configs.security.jwtSecret
+    );
+
+    return `Bearer ${token}`;
+}
+
+async function register(ctx, next) {
     const schema = Joi.object({
+        email: Joi.string().required(),
         name: Joi.string().required(),
         password: Joi.string()
             .max(60)
             .required(),
-        age: Joi.number(),
     });
     await ctx.validateAsync(schema);
 
     const userDto = ctx.request.body;
     await userService.createUser(userDto);
 
-    ctx.restify();
-    await next();
-};
+    ctx.status = 201;
+    ctx.response.body = {
+        code: 0,
+        msg: 'register success!',
+        data: generateJWT(userDto),
+    };
 
-const login = async (ctx, next) => {
+    await next();
+}
+
+async function login(ctx, next) {
     const schema = Joi.object({
-        name: Joi.string().required(),
+        email: Joi.string().required(),
         password: Joi.string()
             .max(60)
             .required(),
     });
     await ctx.validateAsync(schema);
 
-    const { name, password } = ctx.request.body;
-    const user = await userService.checkLogin(name, password);
+    const { email, password } = ctx.request.body;
+    const user = await userService.checkLogin(email, password);
 
     if (user) {
-        const token = jwt.sign(
-            {
-                data: user,
-                exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
-            },
-            configs.security.jwtSecret
-        );
         ctx.response.body = {
             code: 0,
             msg: 'login success!',
-            data: `Bearer ${token}`,
+            data: generateJWT(user),
         };
     } else {
         throw Boom.unauthorized();
     }
 
     await next();
-};
+}
 
-const getUsers = async (ctx, next) => {
+async function getUsers(ctx, next) {
     const users = await userService.findAllUsers();
     ctx.restify(users);
     await next();
-};
+}
 
 module.exports = { register, login, getUsers };

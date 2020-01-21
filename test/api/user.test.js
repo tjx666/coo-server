@@ -5,20 +5,20 @@ describe('#user API', () => {
         const registerURL = '/api/v1/users/register';
 
         it('#register user success', async () => {
-            await request
+            const {
+                body: { data },
+            } = await request
                 .post(registerURL)
-                .send({ name: 'test-register', password: '9999999' })
-                .expect(201, {
-                    code: 0,
-                    msg: 'ok',
-                    data: {},
-                });
+                .send({ email: 'a@b.com', name: 'ly', password: '9999999' })
+                .expect(201);
+
+            assert(typeof data === 'string');
         });
 
         it(`bad request should return { code: 400, msg: 'xxx' }`, async () => {
             await request
                 .post(registerURL)
-                .send({ age: 18 })
+                .send({ email: 'a@b.com', password: '666' })
                 .expect(400, {
                     code: 400,
                     msg: `"name" is required`,

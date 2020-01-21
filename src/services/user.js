@@ -20,8 +20,8 @@ const findAllUsers = async projection => {
     return User.find({}, projection || defaultHideFields);
 };
 
-const checkLogin = async (name, password) => {
-    const user = await findOne({ name });
+const checkLogin = async (email, password) => {
+    const user = await findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
         return user;

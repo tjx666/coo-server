@@ -24,19 +24,19 @@ before(async function() {
     // add some test data
     const testUsers = [
         {
-            name: 'test',
-            password: 'test',
-            age: 16,
-        },
-        {
+            email: 'a@gmail.com',
             name: 'ly1',
-            password: 'hash(666666)',
-            age: 21,
+            password: 'p1',
         },
         {
+            email: 'b@gmail.com',
             name: 'ly2',
-            password: 'hash(999999)',
-            age: 18,
+            password: 'p2',
+        },
+        {
+            email: 'b@gmail.com',
+            name: 'ly3',
+            password: 'p3',
         },
     ];
     await Promise.all(testUsers.map(user => userService.createUser(user)));
@@ -44,7 +44,7 @@ before(async function() {
     // get jwt
     const resp = await supertest(server)
         .post('/api/v1/users/login')
-        .send({ name: 'test', password: 'test' })
+        .send({ email: 'a@gmail.com', password: 'p1' })
         .expect(200);
     const token = resp.body.data;
 
