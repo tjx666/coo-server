@@ -4,6 +4,7 @@ const UserSchema = new Schema(
     {
         email: {
             type: String,
+            unique: true,
             required: true,
         },
         name: String,
@@ -13,7 +14,7 @@ const UserSchema = new Schema(
             maxlength: 60,
         },
     },
-    { timestamps: true }
+    { timestamps: true },
 );
 
 module.exports = model('User', UserSchema);

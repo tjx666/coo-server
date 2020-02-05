@@ -15,7 +15,8 @@ before(async function() {
     const { dbName, address, connectOptions } = config.db;
     const conn = await mongoose.createConnection(address, connectOptions);
     await conn.dropDatabase();
-    appLogger.info(`Drop old database ${dbName} ${logSymbols.success}`);
+    await conn.close();
+    appLogger.info(`drop old database ${dbName} ${logSymbols.success}`);
 
     // startup server
     const { app, server } = await start();
@@ -34,7 +35,7 @@ before(async function() {
             password: 'p2',
         },
         {
-            email: 'b@gmail.com',
+            email: 'c@gmail.com',
             name: 'ly3',
             password: 'p3',
         },
@@ -50,6 +51,7 @@ before(async function() {
 
     // setup global request util
     global.request = supertest.agent(server).set('Authorization', token);
+    appLogger.info(`setup JWT ${logSymbols.success}`);
 });
 
 after(async () => {

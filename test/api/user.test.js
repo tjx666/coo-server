@@ -1,10 +1,12 @@
 const assert = require('assert');
 
+const { equal } = assert;
+
 describe('#user API', () => {
     describe('#user register', () => {
         const registerURL = '/api/v1/users/register';
 
-        it('#register user success', async () => {
+        it('register user success', async () => {
             const {
                 body: { data },
             } = await request
@@ -12,7 +14,7 @@ describe('#user API', () => {
                 .send({ email: 'a@b.com', name: 'ly', password: '9999999' })
                 .expect(201);
 
-            assert(typeof data === 'string');
+            equal(typeof data, 'string');
         });
 
         it(`bad request should return { code: 400, msg: 'xxx' }`, async () => {
@@ -27,7 +29,7 @@ describe('#user API', () => {
     });
 
     describe('#test get users', async () => {
-        it('#get all users success', async () => {
+        it('get all users success', async () => {
             const {
                 body: { data: users },
             } = await request.get('/api/v1/users').expect(200);

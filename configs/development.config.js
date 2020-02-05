@@ -15,6 +15,7 @@ exports.db = {
     hostname: '127.0.0.1',
     port: 27017,
     connectOptions: {
+        useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
     },

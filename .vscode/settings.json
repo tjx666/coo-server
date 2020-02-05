@@ -1,3 +1,15 @@
 {
-    "bracket-pair-colorizer-2.excludedLanguages": ["Log"]
+    "bracket-pair-colorizer-2.excludedLanguages": ["Log"],
+    "search.exclude": {
+        "**/node_modules": true,
+        "logs": true,
+        "yarn.lock": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true,
+        "logs": true,
+        "yarn.lock": true
+    }
 }
