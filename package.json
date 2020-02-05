@@ -16,7 +16,7 @@
     },
     "private": true,
     "scripts": {
-        "dev": "cross-env NODE_ENV=development nodemon",
+        "start": "cross-env NODE_ENV=development nodemon",
         "test": "cross-env NODE_ENV=test mocha",
         "lint": "eslint -c .eslintrc.js --ext .js ./{src,test}/**/*.js"
     },
