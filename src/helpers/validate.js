@@ -1,13 +1,11 @@
 const Boom = require('@hapi/boom');
 
-const validate = async function(
-    schema,
-    validateQuery = false,
-    isAsync = false
-) {
+const validate = async function(schema, target = 'body', isAsync = false) {
     const ctx = this;
     const { method, query, body } = ctx.request;
-    const validatedData = method === 'GET' || validateQuery ? query : body;
+    let validatedData = body;
+    if (method === 'get' || target === 'query') validatedData = query;
+    else if (target === 'params') validatedData = ctx.params;
 
     let result;
     if (isAsync) {
@@ -30,7 +28,6 @@ const validateAsync = function async(schema, validateQuery) {
     return validate.call(this, schema, validateQuery, true);
 };
 
-const validateHelper = async server =>
-    Object.assign(server.context, { validate, validateAsync });
+const validateHelper = async server => Object.assign(server.context, { validate, validateAsync });
 
 module.exports = validateHelper;

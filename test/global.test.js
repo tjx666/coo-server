@@ -47,7 +47,7 @@ before(async function() {
         .post('/api/v1/users/login')
         .send({ email: 'a@gmail.com', password: 'p1' })
         .expect(200);
-    const token = resp.body.data;
+    const { token } = resp.body.data;
 
     // setup global request util
     global.request = supertest.agent(server).set('Authorization', token);

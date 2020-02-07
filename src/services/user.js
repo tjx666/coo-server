@@ -3,21 +3,19 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models');
 const configs = require('../../configs');
 
-const DEFAULT_HIDE_FIELDS = '-_id -__v';
-
 const createUser = async userDto => {
     const hashedPassword = await bcrypt.hash(userDto.password, configs.security.passwordHashSaltRounds);
     const newUser = new User({ ...userDto, password: hashedPassword });
 
-    await newUser.save();
+    return newUser.save();
 };
 
-const findOne = async (conditions, projection) => {
-    return User.findOne(conditions, projection || DEFAULT_HIDE_FIELDS);
+const findOne = async conditions => {
+    return User.findOne(conditions);
 };
 
 const findAllUsers = async projection => {
-    return User.find({}, projection || DEFAULT_HIDE_FIELDS);
+    return User.find({}, projection);
 };
 
 const checkLogin = async (email, password) => {

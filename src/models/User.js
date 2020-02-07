@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const omit = require('lodash/omit');
 
 const UserSchema = new Schema(
     {
@@ -14,7 +15,14 @@ const UserSchema = new Schema(
             maxlength: 60,
         },
     },
-    { timestamps: true },
+    {
+        timestamps: true,
+        toObject: {
+            transform(doc, ret) {
+                return omit(ret, ['createdAt', 'updatedAt', '__v', 'password']);
+            },
+        },
+    },
 );
 
 module.exports = model('User', UserSchema);

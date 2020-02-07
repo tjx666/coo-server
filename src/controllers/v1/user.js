@@ -11,7 +11,7 @@ function generateJWT(user) {
             data: user,
             exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
         },
-        configs.security.jwtSecret
+        configs.security.jwtSecret,
     );
 
     return `Bearer ${token}`;
@@ -28,13 +28,16 @@ async function register(ctx, next) {
     await ctx.validateAsync(schema);
 
     const userDto = ctx.request.body;
-    await userService.createUser(userDto);
+    const user = await userService.createUser(userDto);
 
     ctx.status = 201;
     ctx.response.body = {
         code: 0,
         msg: 'register success!',
-        data: generateJWT(userDto),
+        data: {
+            user: user.toObject(),
+            token: generateJWT(user),
+        },
     };
 
     await next();
@@ -56,7 +59,10 @@ async function login(ctx, next) {
         ctx.response.body = {
             code: 0,
             msg: 'login success!',
-            data: generateJWT(user),
+            data: {
+                user: user.toObject(),
+                token: generateJWT(user),
+            },
         };
     } else {
         throw Boom.unauthorized();
@@ -71,4 +77,12 @@ async function getUsers(ctx, next) {
     await next();
 }
 
-module.exports = { register, login, getUsers };
+async function getUser(ctx, next) {
+    const schema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(schema, 'params');
+    const user = await userService.findOne({ _id: ctx.params.id });
+    ctx.restify(user.toObject());
+    await next();
+}
+
+module.exports = { register, login, getUsers, getUser };

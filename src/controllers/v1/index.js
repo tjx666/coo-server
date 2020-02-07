@@ -6,5 +6,6 @@ const router = new Router({ prefix: '/api/v1/' });
 router.post('users/register', userController.register);
 router.post('users/login', userController.login);
 router.get('users', userController.getUsers);
+router.get('users/:id', userController.getUser);
 
 module.exports = router;

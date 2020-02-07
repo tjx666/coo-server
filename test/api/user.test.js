@@ -14,7 +14,7 @@ describe('#user API', () => {
                 .send({ email: 'a@b.com', name: 'ly', password: '9999999' })
                 .expect(201);
 
-            equal(typeof data, 'string');
+            equal(data.user.name, 'ly');
         });
 
         it(`bad request should return { code: 400, msg: 'xxx' }`, async () => {

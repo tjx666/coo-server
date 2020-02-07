@@ -328,7 +328,7 @@ base64id@2.0.0:
 
 bcrypt@3.0.6:
   version "3.0.6"
-  resolved "https://registry.npm.taobao.org/bcrypt/download/bcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
+  resolved "https://registry.npm.taobao.org/bcrypt/download/bcrypt-3.0.6.tgz?cache=0&sync_timestamp=1580927788513&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbcrypt%2Fdownload%2Fbcrypt-3.0.6.tgz#f607846df62d27e60d5e795612c4f67d70206eb2"
   integrity sha1-9geEbfYtJ+YNXnlWEsT2fXAgbrI=
   dependencies:
     nan "2.13.2"
@@ -1232,9 +1232,9 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
 escodegen@^1.10.0, escodegen@^1.7.0:
-  version "1.13.0"
-  resolved "https://registry.npm.taobao.org/escodegen/download/escodegen-1.13.0.tgz#c7adf9bd3f3cc675bb752f202f79a720189cab29"
-  integrity sha1-x635vT88xnW7dS8gL3mnIBicqyk=
+  version "1.14.1"
+  resolved "https://registry.npm.taobao.org/escodegen/download/escodegen-1.14.1.tgz?cache=0&sync_timestamp=1580955044375&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fescodegen%2Fdownload%2Fescodegen-1.14.1.tgz#ba01d0c8278b5e95a9a45350142026659027a457"
+  integrity sha1-ugHQyCeLXpWppFNQFCAmZZAnpFc=
   dependencies:
     esprima "^4.0.1"
     estraverse "^4.2.0"
@@ -1786,7 +1786,7 @@ globals@^12.1.0:
 
 got@^6.7.1:
   version "6.7.1"
-  resolved "https://registry.npm.taobao.org/got/download/got-6.7.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgot%2Fdownload%2Fgot-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
+  resolved "https://registry.npm.taobao.org/got/download/got-6.7.1.tgz?cache=0&sync_timestamp=1581058555091&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgot%2Fdownload%2Fgot-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
   integrity sha1-JAzQV4WpoY5WHcG0S0HHY+8ejbA=
   dependencies:
     create-error-class "^3.0.0"
@@ -2394,10 +2394,10 @@ koa-response-time@^2.1.0:
   resolved "https://registry.npm.taobao.org/koa-response-time/download/koa-response-time-2.1.0.tgz#bc8473207255fcbddaf10004bd7a8e59f2e948c9"
   integrity sha1-vIRzIHJV/L3a8QAEvXqOWfLpSMk=
 
-koa-router@^8.0.6:
-  version "8.0.6"
-  resolved "https://registry.npm.taobao.org/koa-router/download/koa-router-8.0.6.tgz#5e808ee69dad4fd62d647102aac42be09e4425b0"
-  integrity sha1-XoCO5p2tT9YtZHECqsQr4J5EJbA=
+koa-router@^8.0.7:
+  version "8.0.7"
+  resolved "https://registry.npm.taobao.org/koa-router/download/koa-router-8.0.7.tgz#40a6a7ca95f17e3809181d93f5d6d8f2ec39f206"
+  integrity sha1-QKanypXxfjgJGB2T9dbY8uw58gY=
   dependencies:
     debug "^4.1.1"
     http-errors "^1.7.3"
@@ -3670,9 +3670,9 @@ resolve-from@^4.0.0:
   integrity sha1-SrzYUq0y3Xuqv+m0DgCjbbXzkuY=
 
 resolve@^1.10.0, resolve@^1.12.0, resolve@^1.13.1:
-  version "1.15.0"
-  resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.15.0.tgz?cache=0&sync_timestamp=1579710052952&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fresolve%2Fdownload%2Fresolve-1.15.0.tgz#1b7ca96073ebb52e741ffd799f6b39ea462c67f5"
-  integrity sha1-G3ypYHPrtS50H/15n2s56kYsZ/U=
+  version "1.15.1"
+  resolved "https://registry.npm.taobao.org/resolve/download/resolve-1.15.1.tgz#27bdcdeffeaf2d6244b95bb0f9f4b4653451f3e8"
+  integrity sha1-J73N7/6vLWJEuVuw+fS0ZTRR8+g=
   dependencies:
     path-parse "^1.0.6"
 
