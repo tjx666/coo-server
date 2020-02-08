@@ -1,21 +1,7 @@
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
-const jwt = require('jsonwebtoken');
 
 const { userService } = require('../../services');
-const configs = require('../../../configs');
-
-function generateJWT(user) {
-    const token = jwt.sign(
-        {
-            data: user,
-            exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
-        },
-        configs.security.jwtSecret,
-    );
-
-    return `Bearer ${token}`;
-}
 
 async function register(ctx, next) {
     const schema = Joi.object({
@@ -36,7 +22,7 @@ async function register(ctx, next) {
         msg: 'register success!',
         data: {
             user: user.toObject(),
-            token: generateJWT(user),
+            token: userService.generateJWT(user),
         },
     };
 
@@ -61,7 +47,7 @@ async function login(ctx, next) {
             msg: 'login success!',
             data: {
                 user: user.toObject(),
-                token: generateJWT(user),
+                token: userService.generateJWT(user),
             },
         };
     } else {
@@ -77,12 +63,26 @@ async function getUsers(ctx, next) {
     await next();
 }
 
-async function getUser(ctx, next) {
+async function getUserById(ctx, next) {
     const schema = Joi.object({ id: Joi.string().required() });
     await ctx.validateAsync(schema, 'params');
-    const user = await userService.findOne({ _id: ctx.params.id });
-    ctx.restify(user.toObject());
+    const user = await userService.findOneById(ctx.params.id);
+    if (user === null) {
+        throw Boom.notFound();
+    } else {
+        ctx.restify(user.toObject());
+    }
     await next();
 }
 
-module.exports = { register, login, getUsers, getUser };
+async function updateUserById(ctx, next) {
+    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(paramsSchema, 'params');
+    const bodySchema = Joi.object({ name: Joi.string(), password: Joi.string().allow('') });
+    await ctx.validateAsync(bodySchema);
+    await userService.updateOneById(ctx.params.id, ctx.request.body || {});
+    ctx.restify();
+    await next();
+}
+
+module.exports = { register, login, getUsers, getUserById, updateUserById };

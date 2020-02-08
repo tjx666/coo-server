@@ -1,36 +1,64 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const { User } = require('../models');
 const configs = require('../../configs');
 
-const createUser = async userDto => {
-    const hashedPassword = await bcrypt.hash(userDto.password, configs.security.passwordHashSaltRounds);
+function generateJWT(user) {
+    const token = jwt.sign(
+        {
+            data: user,
+            exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
+        },
+        configs.security.jwtSecret,
+    );
+
+    return `Bearer ${token}`;
+}
+
+async function generateHashedPassword(password) {
+    return bcrypt.hash(password, configs.security.passwordHashSaltRounds);
+}
+
+async function createUser(userDto) {
+    const hashedPassword = await generateHashedPassword(userDto.password);
     const newUser = new User({ ...userDto, password: hashedPassword });
 
     return newUser.save();
-};
+}
 
-const findOne = async conditions => {
-    return User.findOne(conditions);
-};
+async function findOneById(id) {
+    return User.findOne({ _id: id });
+}
 
-const findAllUsers = async projection => {
+async function findAllUsers(projection) {
     return User.find({}, projection);
-};
+}
 
-const checkLogin = async (email, password) => {
-    const user = await findOne({ email });
+async function checkLogin(email, password) {
+    const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {
         return user;
     }
 
     return false;
-};
+}
+
+async function updateOneById(id, newUserInfo) {
+    if (newUserInfo.password) {
+        newUserInfo.password = await generateHashedPassword(newUserInfo.password);
+    } else {
+        delete newUserInfo.password;
+    }
+    return User.update({ _id: id }, newUserInfo);
+}
 
 module.exports = {
-    findOne,
+    generateJWT,
+    findOneById,
     createUser,
     findAllUsers,
     checkLogin,
+    updateOneById,
 };
