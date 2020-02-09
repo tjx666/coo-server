@@ -8,7 +8,8 @@ function generateJWT(user) {
     const token = jwt.sign(
         {
             data: user,
-            exp: Math.floor(Date.now() / 1000) + 6 * 60 * 60,
+            // 默认2周后 token 失效
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 7 * 2,
         },
         configs.security.jwtSecret,
     );

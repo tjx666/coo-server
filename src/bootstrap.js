@@ -1,11 +1,13 @@
 /* eslint-disable new-cap */
 
+const { resolve } = require('path');
 const Koa = require('koa');
 const responseTime = require('koa-response-time');
 const requestLogger = require('koa-logger');
 const helmet = require('koa-helmet');
 const cors = require('@koa/cors');
-const bodyParser = require('koa-bodyparser');
+const staticServe = require('koa-static');
+const koaBody = require('koa-body');
 const jwt = require('koa-jwt');
 const Boom = require('@hapi/boom');
 
@@ -34,13 +36,15 @@ const bootstrap = async () => {
     env === 'development' && app.use(requestLogger());
     app.use(helmet());
     app.use(cors());
-    app.use(bodyParser());
+    // 强缓存2周
+    app.use(staticServe(resolve(__dirname, '../public'), { maxage: 1000 * 60 * 60 * 7 * 2 }));
+    app.use(koaBody());
     app.use(exceptionMiddleware());
     app.use(jwtExceptionMiddleware());
     app.use(
         jwt({ secret: config.security.jwtSecret }).unless({
             path: [/\/api\/v\d\/users\/register/, /\/api\/v\d\/users\/login/],
-        })
+        }),
     );
     app.use(router.routes());
     app.use(
@@ -48,7 +52,7 @@ const bootstrap = async () => {
             throw: true,
             notImplemented: () => new Boom.notImplemented(),
             methodNotAllowed: () => new Boom.methodNotAllowed(),
-        })
+        }),
     );
 
     return app;
