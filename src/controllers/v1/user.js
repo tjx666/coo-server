@@ -1,7 +1,11 @@
+const path = require('path');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
+const multer = require('@koa/multer');
+const compose = require('koa-compose');
 
 const { userService } = require('../../services');
+const { resolvePath, projectRoot } = require('../../../utils/env');
 
 async function register(ctx, next) {
     const schema = Joi.object({
@@ -85,4 +89,28 @@ async function updateUserById(ctx, next) {
     await next();
 }
 
-module.exports = { register, login, getUsers, getUserById, updateUserById };
+// upload avatar
+let tempUserIdParam;
+const avatarStorage = multer.diskStorage({
+    destination: resolvePath(projectRoot, './public/images/avatar'),
+    filename(req, file, cb) {
+        console.log({ req });
+        cb(null, `${tempUserIdParam}${path.extname(file.originalname)}`);
+    },
+});
+const multerForAvatar = multer({ storage: avatarStorage });
+const uploadAvatar = compose([
+    async (ctx, next) => {
+        const schema = Joi.object({ id: Joi.string().required() });
+        await ctx.validateAsync(schema, 'params');
+        tempUserIdParam = ctx.params.id;
+        await next();
+    },
+    multerForAvatar.single('avatar'),
+    async (ctx, next) => {
+        ctx.restify({}, 'update avatar success!');
+        await next();
+    },
+]);
+
+module.exports = { register, login, getUsers, getUserById, updateUserById, uploadAvatar };

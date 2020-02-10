@@ -1,9 +1,9 @@
 const restifyHelper = server => {
-    server.context.restify = function(data = {}, status) {
+    server.context.restify = function(data = {}, msg = 'success', status) {
         const { method } = this.request;
         this.response.body = {
             code: 0,
-            msg: 'ok',
+            msg,
             data: method === 'DELETE' ? {} : data,
         };
 

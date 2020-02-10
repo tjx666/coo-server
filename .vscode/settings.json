@@ -2,6 +2,7 @@
     "bracket-pair-colorizer-2.excludedLanguages": ["Log"],
     "search.exclude": {
         "**/node_modules": true,
+        "public": true,
         "logs": true,
         "yarn.lock": true
     },
@@ -9,6 +10,7 @@
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
         "**/node_modules/*/**": true,
+        "public": true,
         "logs": true,
         "yarn.lock": true
     }
