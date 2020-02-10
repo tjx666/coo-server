@@ -90,12 +90,10 @@ async function updateUserById(ctx, next) {
 }
 
 // upload avatar
-let tempUserIdParam;
 const avatarStorage = multer.diskStorage({
     destination: resolvePath(projectRoot, './public/images/avatar'),
     filename(req, file, cb) {
-        console.log({ req });
-        cb(null, `${tempUserIdParam}${path.extname(file.originalname)}`);
+        cb(null, `${req.params.id}${path.extname(file.originalname)}`);
     },
 });
 const multerForAvatar = multer({ storage: avatarStorage });
@@ -103,7 +101,7 @@ const uploadAvatar = compose([
     async (ctx, next) => {
         const schema = Joi.object({ id: Joi.string().required() });
         await ctx.validateAsync(schema, 'params');
-        tempUserIdParam = ctx.params.id;
+        ctx.req.params = ctx.params;
         await next();
     },
     multerForAvatar.single('avatar'),
