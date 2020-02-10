@@ -3743,11 +3743,6 @@ registry-url@^3.0.3:
   dependencies:
     rc "^1.0.1"
 
-require-dir@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/require-dir/download/require-dir-1.2.0.tgz#0d443b75e96012d3ca749cf19f529a789ae74817"
-  integrity sha1-DUQ7delgEtPKdJzxn1KaeJrnSBc=
-
 require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/require-directory/download/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const logSymbols = require('log-symbols');
 
-const { appLogger } = require('../src/helpers/logger').helpers;
+const { appLogger } = require('../src/helpers').logHelper.helpers;
 const { userService } = require('../src/services');
 
 const start = require('../src/index');

@@ -1,21 +1,17 @@
-const { resolve } = require('path');
 const { promisify } = require('util');
 const log4js = require('log4js');
 const rm = require('rimraf');
 
-const { isProd } = require('../../utils/env');
+const { isProd, resolvePath, projectRoot } = require('../../utils/env');
 
-const projectRoot = resolve(__dirname, '../../');
+async function clearLogs() {
+    await promisify(rm)(resolvePath(projectRoot, './logs'));
+}
 
-const clearLogs = async () => {
-    await promisify(rm)(resolve(projectRoot, './logs'));
-};
-
-const appLogPath = resolve(projectRoot, './logs/application.log');
-const ctxLogPath = resolve(projectRoot, './logs/context.log');
-const appErrorLogPath = resolve(projectRoot, './logs/application.error.log');
-const ctxErrorLogPath = resolve(projectRoot, './logs/context.error.log');
-
+const appLogPath = resolvePath(projectRoot, './logs/application.log');
+const ctxLogPath = resolvePath(projectRoot, './logs/context.log');
+const appErrorLogPath = resolvePath(projectRoot, './logs/application.error.log');
+const ctxErrorLogPath = resolvePath(projectRoot, './logs/context.error.log');
 const configuration = {
     appenders: {
         appFile: {
@@ -67,6 +63,7 @@ const configuration = {
         },
     },
 };
+
 if (isProd) {
     Object.values(configuration.categories)
         .slice(1)
@@ -74,18 +71,17 @@ if (isProd) {
 }
 log4js.configure(configuration);
 
-const helpers = {
+const loggers = {
     appLogger: log4js.getLogger('application'),
     ctxLogger: log4js.getLogger('context'),
     logger: log4js.getLogger('console'),
     clearLogs,
 };
 
-const loggerHelper = server => {
-    Object.assign(server, helpers);
-    Object.assign(server.context, helpers);
-};
+function logHelper(server) {
+    Object.assign(server, loggers);
+    Object.assign(server.context, loggers);
+}
+logHelper.helpers = loggers;
 
-loggerHelper.helpers = helpers;
-
-module.exports = loggerHelper;
+module.exports = logHelper;

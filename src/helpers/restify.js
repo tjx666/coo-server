@@ -1,4 +1,4 @@
-const restifyHelper = server => {
+module.exports = function restifyHelper(server) {
     server.context.restify = function(data = {}, msg = 'success', status) {
         const { method } = this.request;
         this.response.body = {
@@ -17,5 +17,3 @@ const restifyHelper = server => {
         this.status = status;
     };
 };
-
-module.exports = restifyHelper;

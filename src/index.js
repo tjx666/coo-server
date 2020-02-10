@@ -2,12 +2,12 @@ const { promisify } = require('util');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
 
-const loggerHelpers = require('./helpers/logger');
+const { logHelper } = require('./helpers');
 const bootstrap = require('./bootstrap');
 const { env: mode } = require('../utils/env');
 const config = require('../configs');
 
-const { appLogger } = loggerHelpers.helpers;
+const { appLogger } = logHelper.helpers;
 
 const start = async () => {
     appLogger.info(`Startup server under ${chalk.bold.yellow(mode)} mode`);

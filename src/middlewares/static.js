@@ -1,0 +1,23 @@
+const koaStatic = require('koa-static');
+const { projectRoot } = require('../../utils/env');
+
+// 强缓存时间为 2 周
+const twoWeeks = 1000 * 60 * 60 * 7 * 2;
+// 请求头像的 url 没有文件后缀，所以这里要配置默认查找的后缀
+const serveAvatar = koaStatic(projectRoot, {
+    maxage: twoWeeks,
+    // 只支持 png 和 jpg 格式头像
+    extensions: ['png', 'jpg'],
+});
+const serveOthers = koaStatic(projectRoot, { maxage: twoWeeks });
+
+module.exports = function staticService(opts = {}) {
+    return async (ctx, next) => {
+        if (ctx.url.startsWith('/public')) {
+            if (ctx.url.startsWith('/public/images/avatar')) await serveAvatar(ctx, next);
+            else await serveOthers(ctx, next);
+        } else {
+            await next();
+        }
+    };
+};
