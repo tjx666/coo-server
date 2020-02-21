@@ -1,3 +1,5 @@
+const OFF = 0;
+
 module.exports = {
     env: {
         commonjs: true,
@@ -15,15 +17,15 @@ module.exports = {
         ecmaVersion: 2020,
     },
     rules: {
-        'func-names': 0,
-        'global-require': 0,
-        'no-console': 0,
-        'no-param-reassign': 0,
-        'no-underscore-dangle': 0,
-        'no-unused-expressions': 0,
-        'no-unused-vars': 1,
+        'func-names': OFF,
+        'global-require': OFF,
+        'no-console': OFF,
+        'no-param-reassign': OFF,
+        'no-underscore-dangle': OFF,
+        'no-unused-expressions': OFF,
+        'no-unused-vars': OFF,
 
-        'import/newline-after-import': 0,
-        'import/no-dynamic-require': 0,
+        'import/newline-after-import': OFF,
+        'import/no-dynamic-require': OFF,
     },
 };
