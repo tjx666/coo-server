@@ -1,7 +1,5 @@
 const assert = require('assert');
 
-const { equal } = assert;
-
 describe('#user API', () => {
     describe('#user register', () => {
         const registerURL = '/api/v1/users/register';
@@ -14,7 +12,7 @@ describe('#user API', () => {
                 .send({ email: 'a@b.com', name: 'ly', password: '9999999' })
                 .expect(201);
 
-            equal(data.user.name, 'ly');
+            assert.strictEqual(data.user.name, 'ly');
         });
 
         it(`bad request should return { code: 400, msg: 'xxx' }`, async () => {
@@ -28,13 +26,13 @@ describe('#user API', () => {
         });
     });
 
-    describe('#test get users', async () => {
+    describe('#test get users', () => {
         it('get all users success', async () => {
             const {
                 body: { data: users },
             } = await request.get('/api/v1/users').expect(200);
 
-            assert(users.length > 0);
+            assert.ok(users.length > 0);
         });
     });
 });

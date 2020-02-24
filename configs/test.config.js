@@ -1,8 +1,8 @@
-const _ = require('lodash');
-const devConfig = require('./development.config');
+const merge = require('lodash/merge');
+const devConfig = require('./base.config');
 
 exports.server = {
-    port: 3001,
+    port: 8000,
 };
 
 exports.security = {
@@ -14,4 +14,4 @@ exports.db = {
     dbName: 'coo-test',
 };
 
-module.exports = _.merge(devConfig, exports);
+module.exports = merge(devConfig, exports);

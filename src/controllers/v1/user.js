@@ -5,7 +5,7 @@ const multer = require('@koa/multer');
 const compose = require('koa-compose');
 
 const { userService } = require('../../services');
-const { resolvePath, projectRoot } = require('../../../utils/env');
+const { PROJECT_ROOT } = require('../../../utils/constants');
 
 async function register(ctx, next) {
     const schema = Joi.object({
@@ -70,28 +70,33 @@ async function getUsers(ctx, next) {
 async function getUserById(ctx, next) {
     const schema = Joi.object({ id: Joi.string().required() });
     await ctx.validateAsync(schema, 'params');
+
     const user = await userService.findOneById(ctx.params.id);
     if (user === null) {
         throw Boom.notFound();
     } else {
         ctx.restify(user.toObject());
     }
+
     await next();
 }
 
 async function updateUserById(ctx, next) {
     const paramsSchema = Joi.object({ id: Joi.string().required() });
     await ctx.validateAsync(paramsSchema, 'params');
+
     const bodySchema = Joi.object({ name: Joi.string(), password: Joi.string().allow('') });
     await ctx.validateAsync(bodySchema);
+
     await userService.updateOneById(ctx.params.id, ctx.request.body || {});
     ctx.restify();
+
     await next();
 }
 
-// upload avatar
+// 上传头像
 const avatarStorage = multer.diskStorage({
-    destination: resolvePath(projectRoot, './public/images/avatar'),
+    destination: path.resolve(PROJECT_ROOT, './public/images/avatar'),
     filename(req, file, cb) {
         cb(null, `${req.params.id}${path.extname(file.originalname)}`);
     },

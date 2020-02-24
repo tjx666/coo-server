@@ -2,23 +2,26 @@ const { promisify } = require('util');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
 
-const { logHelper } = require('./helpers');
+const { appLogger } = require('./helpers/log').loggers;
 const bootstrap = require('./bootstrap');
-const { env: mode } = require('../utils/env');
+const { ENV } = require('../utils/constants');
 const config = require('../configs');
-
-const { appLogger } = logHelper.helpers;
+const getPort = require('../utils/getPort');
 
 const start = async () => {
-    appLogger.info(`Startup server under ${chalk.bold.yellow(mode)} mode`);
+    appLogger.info(`Startup server under ${chalk.bold.yellow(ENV)} mode`);
+
+    const { host, port: defaultPort, address } = config.server;
+    const port = await getPort(host, defaultPort);
 
     const app = await bootstrap();
-    const { hostname, port, address } = config.server;
     const server = await promisify(cb => {
-        const httServer = app.listen(port, hostname, err => cb(err, httServer));
+        const httServer = app.listen(port, port, err => cb(err, httServer));
     })();
 
-    app.appLogger.info(`Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`);
+    app.appLogger.info(
+        `Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`,
+    );
 
     return {
         app,
@@ -26,12 +29,8 @@ const start = async () => {
     };
 };
 
-process.on('unhandledRejection', err => {
-    appLogger.error(err);
-});
-
-if (mode !== 'test') {
-    start();
-} else {
+if (ENV === 'test') {
     module.exports = start;
+} else {
+    start();
 }
