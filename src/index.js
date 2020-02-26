@@ -1,21 +1,26 @@
 const { promisify } = require('util');
+const Koa = require('koa');
 const chalk = require('chalk');
 const logSymbols = require('log-symbols');
 
+const setupHelpers = require('./helpers');
+const setupMiddlewares = require('./middlewares');
+
 const { appLogger } = require('./helpers/log').loggers;
-const bootstrap = require('./bootstrap');
-const { ENV } = require('../utils/constants');
 const config = require('../configs');
 const getPort = require('../utils/getPort');
+const { ENV } = require('../utils/constants');
 
 const start = async () => {
-    appLogger.info(`Startup server under ${chalk.bold.yellow(ENV)} mode`);
+    const app = new Koa();
+
+    await setupHelpers(app);
+    await setupMiddlewares(app);
 
     const { host, port: defaultPort, address } = config.server;
     const port = await getPort(host, defaultPort);
-
-    const app = await bootstrap();
     const server = await promisify(cb => {
+        appLogger.info(`Startup server under ${chalk.bold.yellow(ENV)} mode`);
         const httServer = app.listen(port, port, err => cb(err, httServer));
     })();
 
