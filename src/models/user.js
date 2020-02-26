@@ -8,11 +8,19 @@ const UserSchema = new Schema(
             unique: true,
             required: true,
         },
-        name: String,
+        name: {
+            type: String,
+            maxlength: 24,
+        },
         password: {
             type: String,
             required: true,
             maxlength: 60,
+        },
+        // 文件名
+        avatar: {
+            type: String,
+            maxlength: 40,
         },
     },
     {

@@ -3,8 +3,11 @@ const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
 const multer = require('@koa/multer');
 const compose = require('koa-compose');
+const fs = require('fs-extra');
 
 const { userService } = require('../../services');
+const { md5 } = require('../../../utils/crypt');
+const config = require('../../../configs');
 const { PROJECT_ROOT } = require('../../../utils/constants');
 
 async function register(ctx, next) {
@@ -95,23 +98,27 @@ async function updateUserById(ctx, next) {
 }
 
 // 上传头像
-const avatarStorage = multer.diskStorage({
-    destination: path.resolve(PROJECT_ROOT, './public/images/avatar'),
-    filename(req, file, cb) {
-        cb(null, `${req.params.id}${path.extname(file.originalname)}`);
-    },
+const multerForAvatar = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: config.server.maxAvatarSize },
 });
-const multerForAvatar = multer({ storage: avatarStorage });
 const uploadAvatar = compose([
     async (ctx, next) => {
         const schema = Joi.object({ id: Joi.string().required() });
         await ctx.validateAsync(schema, 'params');
-        ctx.req.params = ctx.params;
         await next();
     },
     multerForAvatar.single('avatar'),
     async (ctx, next) => {
+        const avatarFile = ctx.request.file;
+        const digest = md5(avatarFile.buffer);
+        const fileName = `${digest}${path.extname(avatarFile.originalname)}`;
+        const filePath = path.resolve(PROJECT_ROOT, `./public/images/avatar/${fileName}`);
+
+        await userService.updateOneById(ctx.params.id, { avatar: fileName });
+        await fs.writeFile(filePath, avatarFile.buffer);
         ctx.restify({}, 'update avatar success!');
+
         await next();
     },
 ]);

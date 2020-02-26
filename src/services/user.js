@@ -87,7 +87,7 @@ async function updateOneById(id, newUserInfo) {
     } else {
         delete newUserInfo.password;
     }
-    return User.update({ _id: id }, newUserInfo);
+    return User.updateOne({ _id: id }, newUserInfo);
 }
 
 module.exports = {
