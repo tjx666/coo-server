@@ -4,6 +4,6 @@ cache:
 install:
     - yarn
 script:
-    - yarn audit
+    - npx audit-ci -m
     - yarn test
 services: mongodb

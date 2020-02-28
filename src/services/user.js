@@ -6,8 +6,9 @@ const configs = require('../../configs');
 
 /**
  * 根据用户信息生成 JWT token
- * @param {Object} user 用户信息
- * @returns {String} JWT
+ *
+ * @param {object} user 用户信息
+ * @returns {string} JWT
  */
 function generateJWT(user) {
     const token = jwt.sign(
@@ -23,8 +24,9 @@ function generateJWT(user) {
 
 /**
  * 对密码进行加盐哈希
- * @param {String} password 原密码
- * @returns {String} 密码加盐哈希值
+ *
+ * @param {string} password 原密码
+ * @returns {string} 密码加盐哈希值
  */
 async function generateHashedPassword(password) {
     return bcrypt.hash(password, configs.security.passwordHashSaltRounds);
@@ -32,8 +34,9 @@ async function generateHashedPassword(password) {
 
 /**
  * 新建用户
- * @param {Object} userDto
- * @returns {Object} document
+ *
+ * @param {object} userDto
+ * @returns {object} document
  */
 async function createUser(userDto) {
     const hashedPassword = await generateHashedPassword(userDto.password);
@@ -43,8 +46,9 @@ async function createUser(userDto) {
 
 /**
  * 根据用户 id 获取用户
- * @param {String} id
- * @returns {Object} document
+ *
+ * @param {string} id
+ * @returns {object} document
  */
 async function findOneById(id) {
     return User.findOne({ _id: id });
@@ -52,8 +56,9 @@ async function findOneById(id) {
 
 /**
  * 根据过滤条件获取用户
- * @param {Object} projection
- * @returns {Object} document
+ *
+ * @param {object} projection
+ * @returns {object} document
  */
 async function findAllUsers(projection = '-_id -__v -createdAt -updatedAt') {
     return User.find({}, projection);
@@ -61,9 +66,10 @@ async function findAllUsers(projection = '-_id -__v -createdAt -updatedAt') {
 
 /**
  * 登入验证
- * @param {String} email
- * @param {String} password
- * @returns {Boolean} 是否通过登入验证
+ *
+ * @param {string} email
+ * @param {string} password
+ * @returns {boolean} 是否通过登入验证
  */
 async function checkLogin(email, password) {
     const user = await User.findOne({ email });
@@ -77,9 +83,10 @@ async function checkLogin(email, password) {
 
 /**
  * 根据用户 id 更新用户
- * @param {String} id
- * @param {Object} newUserInfo
- * @returns {Object} document
+ *
+ * @param {string} id
+ * @param {object} newUserInfo
+ * @returns {object} document
  */
 async function updateOneById(id, newUserInfo) {
     if (newUserInfo.password) {

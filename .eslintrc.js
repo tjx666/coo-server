@@ -14,9 +14,10 @@ module.exports = {
         'plugin:node/recommended-script',
         'plugin:promise/recommended',
         'plugin:mocha/recommended',
+        'plugin:jsdoc/recommended',
         'prettier',
     ],
-    plugins: ['promise', 'mocha'],
+    plugins: ['promise', 'mocha', 'jsdoc'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -32,6 +33,9 @@ module.exports = {
 
         'import/newline-after-import': OFF,
         'import/no-dynamic-require': OFF,
+
+        'jsdoc/require-jsdoc': OFF,
+        'jsdoc/require-param-description': OFF,
 
         'func-names': OFF,
         'global-require': OFF,
