@@ -1,5 +1,4 @@
 /* eslint-disable mocha/no-top-level-hooks, mocha/no-hooks-for-single-case */
-
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const logSymbols = require('log-symbols');
@@ -8,7 +7,7 @@ const { appLogger } = require('../src/helpers/log').loggers;
 const { userService } = require('../src/services');
 
 const config = require('../configs');
-const start = require('../src/index');
+const start = require('../src');
 
 before(async function() {
     this.timeout(10 * 1000);

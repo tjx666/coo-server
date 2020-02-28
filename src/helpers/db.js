@@ -11,9 +11,9 @@ module.exports = async function dbHelper(server) {
 
     try {
         await mongoose.connect(address, connectOptions);
-    } catch (err) {
+    } catch (error) {
         appLogger.error(`Connect to mongoDB at ${colorizedAddr} failed ${logSymbols.error}`);
-        appLogger.error(err);
+        appLogger.error(error);
     }
 
     appLogger.info(`Connected to mongoDB at ${colorizedAddr} ${logSymbols.success}`);

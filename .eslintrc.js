@@ -15,9 +15,10 @@ module.exports = {
         'plugin:promise/recommended',
         'plugin:mocha/recommended',
         'plugin:jsdoc/recommended',
+        'plugin:unicorn/recommended',
         'prettier',
     ],
-    plugins: ['promise', 'mocha', 'jsdoc'],
+    plugins: ['promise', 'mocha', 'jsdoc', 'unicorn'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -36,6 +37,17 @@ module.exports = {
 
         'jsdoc/require-jsdoc': OFF,
         'jsdoc/require-param-description': OFF,
+
+        'unicorn/prevent-abbreviations': OFF,
+        'unicorn/filename-case': [
+            'error',
+            {
+                cases: {
+                    camelCase: true,
+                },
+            },
+        ],
+        'unicorn/no-process-exit': OFF,
 
         'func-names': OFF,
         'global-require': OFF,

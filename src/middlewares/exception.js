@@ -7,45 +7,45 @@ module.exports = function exceptionMiddleware(opts) {
     return async (ctx, next) => {
         try {
             await next();
-        } catch (err) {
+        } catch (error) {
             if (ctx.request.url.startsWith(opts.apiPrefix)) {
-                ctx.ctxLogger.error(err);
+                ctx.ctxLogger.error(error);
 
-                if (err.status === 401) {
+                if (error.status === 401) {
                     // JWT 认证失败
                     ctx.response.status = 401;
                     ctx.body = {
                         code: 401,
                         msg: 'please login first!',
                     };
-                } else if (err.isBoom) {
-                    ctx.response.status = err.output.statusCode || 500;
+                } else if (error.isBoom) {
+                    ctx.response.status = error.output.statusCode || 500;
                     ctx.response.body = {
-                        code: (err.data && err.data.code) || ctx.response.status,
+                        code: (error.data && error.data.code) || ctx.response.status,
                         msg:
-                            (err.data && err.data.msg) ||
-                            err.message ||
-                            err.output.payload.message ||
-                            err.output.payload.error,
+                            (error.data && error.data.msg) ||
+                            error.message ||
+                            error.output.payload.message ||
+                            error.output.payload.error,
                     };
-                } else if (err instanceof multer.MulterError) {
+                } else if (error instanceof multer.MulterError) {
                     ctx.response.status = 400;
                     ctx.response.body = {
                         code: -1,
                         // prettier-ignore
-                        msg: err.code === 'LIMIT_FILE_SIZE'
+                        msg: error.code === 'LIMIT_FILE_SIZE'
                                 ? `max image size is ${config.server.maxAvatarSize / (1024 * 1024)}m`
-                                : err.message
+                                : error.message
                     };
                 } else {
-                    ctx.response.status = err.status || err.statusCode || 500;
+                    ctx.response.status = error.status || error.statusCode || 500;
                     ctx.response.body = {
-                        code: err.code || err.ctx.response.status,
-                        msg: err.msg || err.message || 'An internal server error occurred',
+                        code: error.code || error.ctx.response.status,
+                        msg: error.msg || error.message || 'An internal server error occurred',
                     };
                 }
             } else {
-                throw err;
+                throw error;
             }
         }
     };
