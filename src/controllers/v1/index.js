@@ -5,10 +5,14 @@ const router = new Router({ prefix: '/api/v1/' });
 
 router.post('users/register', userController.register);
 router.post('users/login', userController.login);
+
 router.get('users', userController.getUsers);
 router.get('users/:id', userController.getUserById);
-router.put('users/:id', userController.updateUserById);
+router.get('users/:id/friends', userController.getFriends);
 
-router.post('users/:id/avatar', userController.uploadAvatar);
+router.put('users/:id', userController.updateUserById);
+router.put('users/:id/avatar', userController.uploadAvatar);
+
+router.post('users/:id/friends', userController.applyForNewFriend);
 
 module.exports = router;

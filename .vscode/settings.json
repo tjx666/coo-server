@@ -4,16 +4,14 @@
         "public": true,
         "logs": true,
         "yarn.lock": true,
-        ".gitignore": true,
         "LICENSE": true
     },
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
-        "**/node_modules/*/**": true,
-        "public": true,
-        "logs": true,
-        "yarn.lock": true
+        "**/node_modules/**": true,
+        "**/public/**": true,
+        "**/logs/**": true
     },
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"

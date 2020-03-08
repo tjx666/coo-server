@@ -1,5 +1,7 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const omit = require('lodash/omit');
+
+const config = require('../../configs');
 
 const UserSchema = new Schema(
     {
@@ -22,12 +24,17 @@ const UserSchema = new Schema(
             type: String,
             maxlength: 40,
         },
+        friends: {
+            type: [Types.ObjectId],
+        },
     },
     {
         timestamps: true,
         toObject: {
             transform(doc, ret) {
-                return omit(ret, ['createdAt', 'updatedAt', '__v', 'password']);
+                const { address } = config.server;
+                ret.avatar = `${address}/public/images/avatar/${ret.avatar}`;
+                return omit(ret, ['createdAt', 'updatedAt', '__v', 'password', 'friends']);
             },
         },
     },

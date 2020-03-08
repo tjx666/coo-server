@@ -1,8 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Boom = require('@hapi/boom');
 
 const { User } = require('../models');
 const configs = require('../../configs');
+
+const DEFAULT_PROJECTION = '-_id -__v -createdAt -updatedAt -friends -password';
 
 /**
  * 根据用户信息生成 JWT token
@@ -60,7 +63,7 @@ async function findOneById(id) {
  * @param {object} projection
  * @returns {object} document
  */
-async function findAllUsers(projection = '-_id -__v -createdAt -updatedAt') {
+async function findAllUsers(projection = DEFAULT_PROJECTION) {
     return User.find({}, projection);
 }
 
@@ -97,11 +100,39 @@ async function updateOneById(id, newUserInfo) {
     return User.updateOne({ _id: id }, newUserInfo);
 }
 
+async function findAllFriend(id) {
+    const user = await findOneById(id);
+    if (user === null) {
+        throw Boom.badRequest('no this user!');
+    }
+
+    const friends = await User.find({}, DEFAULT_PROJECTION)
+        .where('_id')
+        .in(user.friends);
+    return friends;
+}
+
+async function addNewFriend(from, target) {
+    const user = await findOneById(from);
+    if (user === null) {
+        throw Boom.badRequest('user not exists!');
+    }
+
+    if (user.friends.includes(target)) {
+        throw Boom.badRequest('You had already been friends!');
+    }
+
+    user.friends.push(target);
+    await user.save();
+}
+
 module.exports = {
     generateJWT,
     findOneById,
+    findAllFriend,
     createUser,
     findAllUsers,
     checkLogin,
     updateOneById,
+    addNewFriend,
 };

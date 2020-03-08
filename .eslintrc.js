@@ -36,6 +36,7 @@ module.exports = {
         'import/no-dynamic-require': OFF,
 
         'jsdoc/require-jsdoc': OFF,
+        'jsdoc/require-param': OFF,
         'jsdoc/require-param-description': OFF,
 
         'unicorn/prevent-abbreviations': OFF,

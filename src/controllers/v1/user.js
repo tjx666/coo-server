@@ -123,4 +123,36 @@ const uploadAvatar = compose([
     },
 ]);
 
-module.exports = { register, login, getUsers, getUserById, updateUserById, uploadAvatar };
+/**
+ * 获取用户好友列表
+ */
+async function getFriends(ctx, next) {
+    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(paramsSchema, 'params');
+
+    const friends = await userService.findAllFriend(ctx.params.id);
+    ctx.restify(friends);
+
+    await next();
+}
+
+async function applyForNewFriend(ctx, next) {
+    const schema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(schema, 'params');
+    await ctx.validateAsync(schema);
+
+    await userService.addNewFriend(ctx.params.id, ctx.request.body.id);
+    await ctx.restify({}, 'apply for friend success!');
+    await next();
+}
+
+module.exports = {
+    register,
+    login,
+    getUsers,
+    getUserById,
+    getFriends,
+    updateUserById,
+    uploadAvatar,
+    applyForNewFriend,
+};
