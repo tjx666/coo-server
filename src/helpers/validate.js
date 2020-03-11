@@ -1,14 +1,16 @@
 const Boom = require('@hapi/boom');
 
-const validate = async function(schema, target = 'body', isAsync = false) {
+const validate = async function(schema, target, isAsync = false) {
     const ctx = this;
     const { method, query, body } = ctx.request;
 
-    let validatedData = body;
-    if (method === 'get' || target === 'query') {
-        validatedData = query;
-    } else if (target === 'params') {
+    let validatedData = method === 'GET' ? query : body;
+    if (target === 'params') {
         validatedData = ctx.params;
+    } else if (target === 'query') {
+        validatedData = query;
+    } else if (target === 'body') {
+        validatedData = body;
     }
 
     let result;

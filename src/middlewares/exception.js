@@ -40,7 +40,7 @@ module.exports = function exceptionMiddleware(opts) {
                 } else {
                     ctx.response.status = error.status || error.statusCode || 500;
                     ctx.response.body = {
-                        code: error.code || error.ctx.response.status,
+                        code: error.code || ctx.response.status,
                         msg: error.msg || error.message || 'An internal server error occurred',
                     };
                 }

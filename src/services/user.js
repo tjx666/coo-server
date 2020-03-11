@@ -5,7 +5,7 @@ const Boom = require('@hapi/boom');
 const { User } = require('../models');
 const configs = require('../../configs');
 
-const DEFAULT_PROJECTION = '-_id -__v -createdAt -updatedAt -friends -password';
+const DEFAULT_PROJECTION = '-__v -createdAt -updatedAt -friends -password';
 
 /**
  * 根据用户信息生成 JWT token
@@ -100,6 +100,12 @@ async function updateOneById(id, newUserInfo) {
     return User.updateOne({ _id: id }, newUserInfo);
 }
 
+async function findOneByEmail(email) {
+    console.log({ email });
+    const user = await User.findOne({ email }, DEFAULT_PROJECTION);
+    return user || {};
+}
+
 async function findAllFriend(id) {
     const user = await findOneById(id);
     if (user === null) {
@@ -129,6 +135,7 @@ async function addNewFriend(from, target) {
 module.exports = {
     generateJWT,
     findOneById,
+    findOneByEmail,
     findAllFriend,
     createUser,
     findAllUsers,

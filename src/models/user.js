@@ -34,7 +34,8 @@ const UserSchema = new Schema(
             transform(doc, ret) {
                 const { address } = config.server;
                 ret.avatar = `${address}/public/images/avatar/${ret.avatar}`;
-                return omit(ret, ['createdAt', 'updatedAt', '__v', 'password', 'friends']);
+                ret.id = ret._id;
+                return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'password', 'friends']);
             },
         },
     },

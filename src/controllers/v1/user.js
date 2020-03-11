@@ -1,9 +1,10 @@
 const path = require('path');
+const fs = require('fs-extra');
+const { omit } = require('lodash');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
 const multer = require('@koa/multer');
 const compose = require('koa-compose');
-const fs = require('fs-extra');
 
 const { userService } = require('../../services');
 const { md5 } = require('../../../utils/crypt');
@@ -84,6 +85,16 @@ async function getUserById(ctx, next) {
     await next();
 }
 
+async function searchUserByEmail(ctx, next) {
+    const schema = Joi.object({ email: Joi.string().required() });
+    await ctx.validateAsync(schema);
+
+    const user = await userService.findOneByEmail(ctx.request.query.email);
+    ctx.restify(Reflect.has(user, '_id') ? user.toObject() : {});
+
+    await next();
+}
+
 async function updateUserById(ctx, next) {
     const paramsSchema = Joi.object({ id: Joi.string().required() });
     await ctx.validateAsync(paramsSchema, 'params');
@@ -131,7 +142,12 @@ async function getFriends(ctx, next) {
     await ctx.validateAsync(paramsSchema, 'params');
 
     const friends = await userService.findAllFriend(ctx.params.id);
-    ctx.restify(friends);
+    ctx.restify(
+        friends.map(friend => {
+            friend.id = friend._id;
+            return omit(friend.toObject(), ['_id']);
+        }),
+    );
 
     await next();
 }
@@ -151,6 +167,7 @@ module.exports = {
     login,
     getUsers,
     getUserById,
+    searchUserByEmail,
     getFriends,
     updateUserById,
     uploadAvatar,
