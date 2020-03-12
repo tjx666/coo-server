@@ -6,8 +6,9 @@ const logSymbols = require('log-symbols');
 const setupHelpers = require('./helpers');
 const setupMiddlewares = require('./middlewares');
 
-const { appLogger } = require('./helpers/log').loggers;
 const config = require('../configs');
+const { appLogger } = require('./helpers/log').loggers;
+
 const getPort = require('../utils/getPort');
 const { ENV } = require('../utils/constants');
 
@@ -36,6 +37,6 @@ const start = async () => {
 
 if (ENV === 'test') {
     module.exports = start;
-} else {
+} else if (require.main === module) {
     start();
 }

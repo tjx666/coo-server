@@ -3,11 +3,10 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const logSymbols = require('log-symbols');
 
-const { appLogger } = require('../src/helpers/log').loggers;
-const { userService } = require('../src/services');
-
 const config = require('../configs');
 const start = require('../src');
+const { appLogger } = require('../src/helpers/log').loggers;
+const { userService } = require('../src/services');
 
 before(async function() {
     this.timeout(10 * 1000);

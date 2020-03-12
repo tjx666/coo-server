@@ -35,10 +35,6 @@ module.exports = {
         'import/newline-after-import': OFF,
         'import/no-dynamic-require': OFF,
 
-        'jsdoc/require-jsdoc': OFF,
-        'jsdoc/require-param': OFF,
-        'jsdoc/require-param-description': OFF,
-
         'unicorn/prevent-abbreviations': OFF,
         'unicorn/filename-case': [
             'error',
@@ -49,6 +45,11 @@ module.exports = {
             },
         ],
         'unicorn/no-process-exit': OFF,
+
+        'jsdoc/require-jsdoc': OFF,
+        'jsdoc/require-param-description': OFF,
+        'jsdoc/require-param': OFF,
+        'jsdoc/require-returns-description': OFF,
 
         'func-names': OFF,
         'global-require': OFF,

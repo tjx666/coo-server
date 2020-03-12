@@ -38,12 +38,12 @@ async function generateHashedPassword(password) {
 /**
  * 新建用户
  *
- * @param {object} userDto
+ * @param {object} user
  * @returns {object} document
  */
-async function createUser(userDto) {
-    const hashedPassword = await generateHashedPassword(userDto.password);
-    const newUser = new User({ ...userDto, password: hashedPassword });
+async function createUser(user) {
+    const hashedPassword = await generateHashedPassword(user.password);
+    const newUser = new User({ ...user, password: hashedPassword });
     return newUser.save();
 }
 
@@ -100,10 +100,15 @@ async function updateOneById(id, newUserInfo) {
     return User.updateOne({ _id: id }, newUserInfo);
 }
 
+/**
+ * 根据邮箱查找用户
+ *
+ * @param {string} email
+ * @returns {object|null}
+ */
 async function findOneByEmail(email) {
-    console.log({ email });
     const user = await User.findOne({ email }, DEFAULT_PROJECTION);
-    return user || {};
+    return user;
 }
 
 async function findAllFriend(id) {

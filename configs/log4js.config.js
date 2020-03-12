@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const log4js = require('log4js');
 
 const { ENV, PROJECT_ROOT } = require('../utils/constants');
+
 const appLogPath = resolve(PROJECT_ROOT, './logs/application.log');
 const ctxLogPath = resolve(PROJECT_ROOT, './logs/context.log');
 const appErrorLogPath = resolve(PROJECT_ROOT, './logs/application.error.log');
