@@ -137,6 +137,21 @@ async function addNewFriend(from, target) {
     await user.save();
 }
 
+async function deleteFriend(from, target) {
+    const user = await findOneById(from);
+    if (user === null) {
+        throw Boom.badRequest('user not exists!');
+    }
+
+    const friendIdIndex = user.friends.indexOf(target);
+    if (friendIdIndex === -1) {
+        throw Boom.badRequest('You are not friends!');
+    }
+
+    user.friends.splice(friendIdIndex, 1);
+    await user.save();
+}
+
 module.exports = {
     generateJWT,
     findOneById,
@@ -147,4 +162,5 @@ module.exports = {
     checkLogin,
     updateOneById,
     addNewFriend,
+    deleteFriend,
 };

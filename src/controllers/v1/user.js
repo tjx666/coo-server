@@ -137,6 +137,16 @@ async function applyForNewFriend(ctx, next) {
     await next();
 }
 
+async function removeFriend(ctx, next) {
+    const schema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(schema);
+    await ctx.validateAsync(schema, 'params');
+
+    await userService.deleteFriend(ctx.params.id, ctx.request.body.id);
+    await ctx.restify({}, 'remove friend success!');
+    await next();
+}
+
 async function searchUserByEmail(ctx, next) {
     const schema = Joi.object({ email: Joi.string().required() });
     await ctx.validateAsync(schema);
@@ -156,5 +166,6 @@ module.exports = {
     uploadAvatar,
     getFriends,
     applyForNewFriend,
+    removeFriend,
     searchUserByEmail,
 };

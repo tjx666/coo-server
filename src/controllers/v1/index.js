@@ -14,6 +14,7 @@ router.put('users/:id', userController.updateUserById);
 router.put('users/:id/avatar', userController.uploadAvatar);
 
 router.post('users/:id/friends', userController.applyForNewFriend);
+router.delete('users/:id/friends', userController.removeFriend);
 
 router.get('search/user', userController.searchUserByEmail);
 
