@@ -34,6 +34,6 @@ const validateAsync = function async(schema, validateQuery) {
     return validate.call(this, schema, validateQuery, true);
 };
 
-module.exports = async function(server) {
-    Object.assign(server.context, { validate, validateAsync });
+module.exports = async function(app) {
+    Object.assign(app.context, { validate, validateAsync });
 };

@@ -38,26 +38,21 @@ async function login(ctx, next) {
 
     const { email, password } = ctx.request.body;
     const user = await userService.checkLogin(email, password);
-
-    if (user) {
-        ctx.response.body = {
-            code: 0,
-            msg: 'login success!',
-            data: {
-                user: user.toObject(),
-                token: userService.generateJWT(user),
-            },
-        };
-    } else {
-        throw Boom.unauthorized();
-    }
+    ctx.response.body = {
+        code: 0,
+        msg: 'login success!',
+        data: {
+            user: user.toObject(),
+            token: userService.generateJWT(user),
+        },
+    };
 
     await next();
 }
 
 async function getUsers(ctx, next) {
     const users = await userService.findAllUsers();
-    ctx.restify(users);
+    ctx.restify(users.map(user => user.toObject()));
     await next();
 }
 
@@ -114,9 +109,6 @@ const uploadAvatar = compose([
     },
 ]);
 
-/**
- * 获取用户好友列表
- */
 async function getFriends(ctx, next) {
     const paramsSchema = Joi.object({ id: Joi.string().required() });
     await ctx.validateAsync(paramsSchema, 'params');

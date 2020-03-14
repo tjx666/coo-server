@@ -19,7 +19,7 @@ const UserSchema = new Schema(
             required: true,
             maxlength: 60,
         },
-        // 文件名
+        // 图片 md5 值
         avatar: {
             type: String,
             maxlength: 40,
@@ -31,7 +31,7 @@ const UserSchema = new Schema(
     {
         timestamps: true,
         toObject: {
-            transform(doc, ret) {
+            transform(_doc, ret) {
                 const { address } = config.server;
                 ret.avatar = `${address}/public/images/avatar/${ret.avatar}`;
                 ret.id = ret._id;

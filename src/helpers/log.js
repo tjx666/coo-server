@@ -16,9 +16,9 @@ const loggers = {
     clearLogs,
 };
 
-function logHelper(server) {
-    Object.assign(server, loggers);
-    Object.assign(server.context, loggers);
+function logHelper(app) {
+    Object.assign(app, loggers);
+    Object.assign(app.context, loggers);
 }
 logHelper.loggers = loggers;
 

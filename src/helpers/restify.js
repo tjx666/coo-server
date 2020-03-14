@@ -1,5 +1,5 @@
-module.exports = function restifyHelper(server) {
-    server.context.restify = function(data = {}, msg = 'success', status) {
+module.exports = function restifyHelper(app) {
+    app.context.restify = function(data = {}, msg = 'success', status) {
         const { method } = this.request;
         this.response.body = {
             code: 0,

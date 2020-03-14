@@ -11,6 +11,7 @@ const { appLogger } = require('./helpers/log').loggers;
 
 const getPort = require('../utils/getPort');
 const { ENV } = require('../utils/constants');
+const socketIo = require('./socketIo');
 
 const start = async () => {
     const app = new Koa();
@@ -24,6 +25,7 @@ const start = async () => {
         appLogger.info(`Startup server under ${chalk.bold.yellow(ENV)} mode`);
         const httServer = app.listen(port, port, err => cb(err, httServer));
     })();
+    await socketIo(app, server);
 
     app.appLogger.info(
         `Server is running at ${chalk.green.underline(address)} ${logSymbols.success}`,

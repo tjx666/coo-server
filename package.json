@@ -40,7 +40,7 @@
     },
     "dependencies": {
         "@hapi/boom": "^9.1.0",
-        "@hapi/joi": "^17.1.0",
+        "@hapi/joi": "^17.1.1",
         "@koa/cors": "^3.0.0",
         "@koa/multer": "^2.0.2",
         "@koa/router": "^8.0.8",
@@ -74,11 +74,10 @@
     "devDependencies": {
         "audit-ci": "^2.5.1",
         "eslint": "^6.7.2",
-        "eslint-config-airbnb-base": "^14.0.0",
+        "eslint-config-airbnb-base": "^14.1.0",
         "eslint-config-prettier": "^6.10.0",
         "eslint-plugin-eslint-comments": "^3.1.2",
         "eslint-plugin-import": "^2.20.1",
-        "eslint-plugin-jsdoc": "^22.0.1",
         "eslint-plugin-mocha": "^6.3.0",
         "eslint-plugin-node": "^11.0.0",
         "eslint-plugin-promise": "^4.2.1",

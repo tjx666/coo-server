@@ -4,9 +4,9 @@ const logSymbols = require('log-symbols');
 
 const configs = require('../../configs');
 
-module.exports = async function dbHelper(server) {
+module.exports = async function dbHelper(app) {
     const { address, connectOptions } = configs.db;
-    const { appLogger } = server;
+    const { appLogger } = app;
     const colorizedAddr = chalk.green.underline(address);
 
     try {
@@ -19,8 +19,8 @@ module.exports = async function dbHelper(server) {
     appLogger.info(`Connected to mongoDB at ${colorizedAddr} ${logSymbols.success}`);
 
     const db = mongoose.connection;
-    server.db = db;
-    server.context.db = db;
+    app.db = db;
+    app.context.db = db;
 
     db.on('close', () => {
         appLogger.warn(

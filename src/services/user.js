@@ -5,8 +5,6 @@ const Boom = require('@hapi/boom');
 const { User } = require('../models');
 const configs = require('../../configs');
 
-const DEFAULT_PROJECTION = '-__v -createdAt -updatedAt -friends -password';
-
 /**
  * 根据用户信息生成 JWT token
  *
@@ -39,7 +37,7 @@ async function generateHashedPassword(password) {
  * 新建用户
  *
  * @param {object} user
- * @returns {object} document
+ * @returns {Document}
  */
 async function createUser(user) {
     const hashedPassword = await generateHashedPassword(user.password);
@@ -51,7 +49,7 @@ async function createUser(user) {
  * 根据用户 id 获取用户
  *
  * @param {string} id
- * @returns {object} document
+ * @returns {Document}
  */
 async function findOneById(id) {
     return User.findOne({ _id: id });
@@ -61,10 +59,10 @@ async function findOneById(id) {
  * 根据过滤条件获取用户
  *
  * @param {object} projection
- * @returns {object} document
+ * @returns {Document}
  */
-async function findAllUsers(projection = DEFAULT_PROJECTION) {
-    return User.find({}, projection);
+async function findAllUsers(projection) {
+    return User.find({});
 }
 
 /**
@@ -72,16 +70,14 @@ async function findAllUsers(projection = DEFAULT_PROJECTION) {
  *
  * @param {string} email
  * @param {string} password
- * @returns {boolean} 是否通过登入验证
+ * @returns {Document}
  */
 async function checkLogin(email, password) {
     const user = await User.findOne({ email });
-
     if (user && (await bcrypt.compare(password, user.password))) {
         return user;
     }
-
-    return false;
+    throw Boom.unauthorized();
 }
 
 /**
@@ -89,7 +85,7 @@ async function checkLogin(email, password) {
  *
  * @param {string} id
  * @param {object} newUserInfo
- * @returns {object} document
+ * @returns {Document}
  */
 async function updateOneById(id, newUserInfo) {
     if (newUserInfo.password) {
@@ -104,25 +100,38 @@ async function updateOneById(id, newUserInfo) {
  * 根据邮箱查找用户
  *
  * @param {string} email
- * @returns {object|null}
+ * @returns {Document|null}
  */
 async function findOneByEmail(email) {
-    const user = await User.findOne({ email }, DEFAULT_PROJECTION);
+    const user = await User.findOne({ email });
     return user;
 }
 
+/**
+ * 获取某用户所有好友
+ *
+ * @param {string} id 用户 id
+ * @returns {Array<Document>}
+ */
 async function findAllFriend(id) {
     const user = await findOneById(id);
     if (user === null) {
         throw Boom.badRequest('no this user!');
     }
 
-    const friends = await User.find({}, DEFAULT_PROJECTION)
+    const friends = await User.find({})
         .where('_id')
         .in(user.friends);
     return friends;
 }
 
+/**
+ * 添加好友
+ *
+ * @param {string} from 发出申请用户的 id
+ * @param {string} target 好友 id
+ * @returns {undefined}
+ */
 async function addNewFriend(from, target) {
     const user = await findOneById(from);
     if (user === null) {
@@ -137,6 +146,13 @@ async function addNewFriend(from, target) {
     await user.save();
 }
 
+/**
+ * 删除好友
+ *
+ * @param {string} from 发出申请用户的 id
+ * @param {string} target 好友 id
+ * @returns {undefined}
+ */
 async function deleteFriend(from, target) {
     const user = await findOneById(from);
     if (user === null) {

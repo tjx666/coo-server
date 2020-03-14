@@ -14,11 +14,10 @@ module.exports = {
         'plugin:node/recommended-script',
         'plugin:promise/recommended',
         'plugin:mocha/recommended',
-        'plugin:jsdoc/recommended',
         'plugin:unicorn/recommended',
         'prettier',
     ],
-    plugins: ['promise', 'mocha', 'jsdoc', 'unicorn'],
+    plugins: ['promise', 'mocha', 'unicorn'],
     globals: {
         Atomics: 'readonly',
         SharedArrayBuffer: 'readonly',
@@ -45,11 +44,6 @@ module.exports = {
             },
         ],
         'unicorn/no-process-exit': OFF,
-
-        'jsdoc/require-jsdoc': OFF,
-        'jsdoc/require-param-description': OFF,
-        'jsdoc/require-param': OFF,
-        'jsdoc/require-returns-description': OFF,
 
         'func-names': OFF,
         'global-require': OFF,
