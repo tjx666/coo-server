@@ -11,7 +11,7 @@ const { appLogger } = require('./helpers/log').loggers;
 
 const getPort = require('../utils/getPort');
 const { ENV } = require('../utils/constants');
-const socketIo = require('./socketIo');
+const socketIo = require('./socket');
 
 const start = async () => {
     const app = new Koa();

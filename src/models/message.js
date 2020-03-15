@@ -11,21 +11,35 @@ const MessageSchema = new Schema(
             type: Types.ObjectId,
             required: true,
         },
-        type: {
+        // 暂不支持
+        status: {
             type: String,
-            enum: ['text'],
+            // 分别表示已创建但未送达，消息已送达但是未读，消息已读
+            enum: ['created', 'received', 'checked'],
+            default: 'created',
+        },
+        fromType: {
+            type: String,
+            enum: ['user', 'group', 'system'],
+            default: 'user',
+        },
+        toType: {
+            type: String,
+            enum: ['user', 'group', 'system'],
+            default: 'user',
+        },
+        contentType: {
+            type: String,
+            enum: ['text', 'image', 'video'],
             default: 'text',
         },
         content: {
             type: String,
             required: true,
-            default: '',
         },
     },
     {
-        timestamps: {
-            createdAt: true,
-        },
+        timestamps: true,
         toObject: {
             transform(doc, ret) {
                 ret.id = ret._id;
@@ -35,4 +49,4 @@ const MessageSchema = new Schema(
     },
 );
 
-module.exports = model(MessageSchema);
+module.exports = model('Message', MessageSchema);
