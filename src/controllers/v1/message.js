@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 const { messageService } = require('../../services');
 
-async function sendUserToUserTextMessage(ctx, next) {
+async function sendPrivateTextMessage(ctx, next) {
     const schema = Joi.object({
         from: Joi.string().required(),
         to: Joi.string().required(),
@@ -33,5 +33,5 @@ async function sendUserToUserTextMessage(ctx, next) {
 }
 
 module.exports = {
-    sendUserToUserTextMessage,
+    sendPrivateTextMessage,
 };

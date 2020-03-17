@@ -133,17 +133,21 @@ async function findAllFriend(id) {
  * @returns {undefined}
  */
 async function addNewFriend(from, target) {
-    const user = await findOneById(from);
-    if (user === null) {
+    const fromUser = await findOneById(from);
+    const targetUser = await findOneById(target);
+    if (fromUser === null || targetUser === null) {
         throw Boom.badRequest('user not exists!');
     }
 
-    if (user.friends.includes(target)) {
+    if (fromUser.friends.includes(target) || fromUser.friends.includes(from)) {
         throw Boom.badRequest('You had already been friends!');
     }
 
-    user.friends.push(target);
-    await user.save();
+    fromUser.friends.push(target);
+    targetUser.friends.push(from);
+
+    await fromUser.save();
+    await targetUser.save();
 }
 
 /**
@@ -154,18 +158,22 @@ async function addNewFriend(from, target) {
  * @returns {undefined}
  */
 async function deleteFriend(from, target) {
-    const user = await findOneById(from);
-    if (user === null) {
+    const fromUser = await findOneById(from);
+    const targetUser = await findOneById(target);
+    if (fromUser === null || targetUser === null) {
         throw Boom.badRequest('user not exists!');
     }
 
-    const friendIdIndex = user.friends.indexOf(target);
-    if (friendIdIndex === -1) {
+    const friendIdIndex1 = fromUser.friends.indexOf(target);
+    const friendIdIndex2 = targetUser.friends.indexOf(from);
+    if (friendIdIndex1 === -1 || friendIdIndex2 === -1) {
         throw Boom.badRequest('You are not friends!');
     }
 
-    user.friends.splice(friendIdIndex, 1);
-    await user.save();
+    fromUser.friends.splice(friendIdIndex1, 1);
+    targetUser.friends.splice(friendIdIndex2, 1);
+    await fromUser.save();
+    await targetUser.save();
 }
 
 module.exports = {

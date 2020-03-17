@@ -22,6 +22,6 @@ router.delete('users/:id/friends', userController.removeFriend);
 router.get('search/user', userController.searchUserByEmail);
 
 // message
-router.post('messages/private/text', messageController.sendUserToUserTextMessage);
+router.post('messages/private/text', messageController.sendPrivateTextMessage);
 
 module.exports = router;

@@ -1,8 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
 const omit = require('lodash/omit');
 
-const config = require('../../configs');
-
 const UserSchema = new Schema(
     {
         email: {
@@ -32,8 +30,7 @@ const UserSchema = new Schema(
         timestamps: true,
         toObject: {
             transform(_doc, ret) {
-                const { address } = config.server;
-                ret.avatar = `${address}/public/images/avatar/${ret.avatar}`;
+                ret.avatar = `/public/images/avatar/${ret.avatar}`;
                 ret.id = ret._id;
                 return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'password', 'friends']);
             },
