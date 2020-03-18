@@ -41,7 +41,7 @@ const MessageSchema = new Schema(
     {
         timestamps: true,
         toObject: {
-            transform(doc, ret) {
+            transform(_doc, ret) {
                 ret.id = ret._id;
                 return omit(ret, ['_id', 'createdAt', '__v']);
             },

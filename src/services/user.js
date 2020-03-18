@@ -14,7 +14,7 @@ const configs = require('../../configs');
 function generateJWT(user) {
     const token = jwt.sign(
         {
-            data: user,
+            id: user._id,
             // 默认2周后 token 失效
             exp: Math.floor(Date.now() / 1000) + 60 * 60 * 7 * 2,
         },
@@ -40,6 +40,11 @@ async function generateHashedPassword(password) {
  * @returns {Document}
  */
 async function createUser(user) {
+    // eslint-disable-next-line no-use-before-define
+    const existedUser = await findOneByEmail(user.email);
+    if (existedUser !== null) {
+        throw Boom.badRequest('the email had been used!', { code: 2 });
+    }
     const hashedPassword = await generateHashedPassword(user.password);
     const newUser = new User({ ...user, password: hashedPassword });
     return newUser.save();
@@ -56,12 +61,11 @@ async function findOneById(id) {
 }
 
 /**
- * 根据过滤条件获取用户
+ * 获取所有用户
  *
- * @param {object} projection
  * @returns {Document}
  */
-async function findAllUsers(projection) {
+async function findAllUsers() {
     return User.find({});
 }
 
@@ -74,10 +78,15 @@ async function findAllUsers(projection) {
  */
 async function checkLogin(email, password) {
     const user = await User.findOne({ email });
-    if (user && (await bcrypt.compare(password, user.password))) {
-        return user;
+    if (user === null) {
+        throw new Boom.Boom('user not exist', { statusCode: 401, data: { code: 2 } });
     }
-    throw Boom.unauthorized();
+
+    if (!(await bcrypt.compare(password, user.password))) {
+        throw new Boom.Boom('password not correct', { statusCode: 401, data: { code: 3 } });
+    }
+
+    return user;
 }
 
 /**
@@ -100,7 +109,7 @@ async function updateOneById(id, newUserInfo) {
  * 根据邮箱查找用户
  *
  * @param {string} email
- * @returns {Document|null}
+ * @returns {Document}
  */
 async function findOneByEmail(email) {
     const user = await User.findOne({ email });
@@ -144,6 +153,7 @@ async function addNewFriend(from, target) {
     }
 
     fromUser.friends.push(target);
+    fromUser.friends.sort((a, b) => a.name > b.name);
     targetUser.friends.push(from);
 
     await fromUser.save();

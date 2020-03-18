@@ -11,8 +11,6 @@ describe('#user API', () => {
                 .post(registerURL)
                 .send({ email: 'a@b.com', name: 'ly', password: '9999999' })
                 .expect(201);
-
-            assert.strictEqual(data.user.name, 'ly');
         });
 
         it(`bad request should return { code: 400, msg: 'xxx' }`, async () => {
@@ -20,7 +18,7 @@ describe('#user API', () => {
                 .post(registerURL)
                 .send({ email: 'a@b.com', password: '666' })
                 .expect(400, {
-                    code: 400,
+                    code: 1,
                     msg: `"name" is required`,
                 });
         });

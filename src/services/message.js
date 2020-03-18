@@ -7,7 +7,8 @@ async function createMessage(from, to, content, options) {
         status: 'created',
         contentType: 'text',
     };
-    const newMessage = new Message({ from, to, content, defaultOptions });
+    options = { ...defaultOptions, ...options };
+    const newMessage = new Message({ from, to, content, options });
     return newMessage.save();
 }
 

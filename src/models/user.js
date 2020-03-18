@@ -30,7 +30,9 @@ const UserSchema = new Schema(
         timestamps: true,
         toObject: {
             transform(_doc, ret) {
-                ret.avatar = `/public/images/avatar/${ret.avatar}`;
+                if (ret.avatar) {
+                    ret.avatar = `/public/images/avatar/${ret.avatar}`;
+                }
                 ret.id = ret._id;
                 return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'password', 'friends']);
             },

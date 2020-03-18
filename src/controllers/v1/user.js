@@ -38,12 +38,13 @@ async function login(ctx, next) {
 
     const { email, password } = ctx.request.body;
     const user = await userService.checkLogin(email, password);
+    const token = userService.generateJWT(user);
     ctx.response.body = {
         code: 0,
         msg: 'login success!',
         data: {
             user: user.toObject(),
-            token: userService.generateJWT(user),
+            token,
         },
     };
 
