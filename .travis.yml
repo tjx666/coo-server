@@ -7,6 +7,6 @@ before_install:
 install:
     - yarn
 script:
-    - npx audit-ci -m -a 2078
+    - npx audit-ci -m
     - yarn test
 services: mongodb
