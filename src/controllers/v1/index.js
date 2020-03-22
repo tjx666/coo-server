@@ -21,7 +21,11 @@ router.delete('users/:id/friends', userController.removeFriend);
 
 router.get('search/user', userController.searchUserByEmail);
 
-// message
+/**
+ * 消息相关 API
+ * url 形式： messages/:situation/:contentType
+ * 之所以 url 不直接用 messages，然后 situation 和 contentType 都放到 body，是因为这样方便把逻辑拆分到不同的 controller
+ */
 router.post('messages/private/text', messageController.sendPrivateTextMessage);
 
 module.exports = router;

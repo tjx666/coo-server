@@ -14,20 +14,25 @@ async function sendPrivateTextMessage(ctx, next) {
     const newMessage = await messageService.createMessage(from, to, content);
 
     const socket = ctx.sockets.get(to);
+    console.log(socket);
     if (socket) {
-        socket.send(
+        socket.emit(
+            'chat',
             {
                 from,
-                fromType: 'user',
-                contentType: 'text',
+                situation: 'private',
                 content,
+                contentType: 'text',
+                createdAt: newMessage.createdAt,
             },
-            data => {
+            (data) => {
                 newMessage.status = 'received';
             },
         );
     }
-    ctx.restify();
+    ctx.restify({
+        createdAt: newMessage.createdAt,
+    });
 
     await next();
 }
