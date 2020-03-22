@@ -27,5 +27,6 @@ router.get('search/user', userController.searchUserByEmail);
  * 之所以 url 不直接用 messages，然后 situation 和 contentType 都放到 body，是因为这样方便把逻辑拆分到不同的 controller
  */
 router.post('messages/private/text', messageController.sendPrivateTextMessage);
+router.post('messages/private/image', messageController.sendPrivateImageMessage);
 
 module.exports = router;
