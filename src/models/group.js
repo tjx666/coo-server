@@ -1,31 +1,23 @@
 const { Schema, model, Types } = require('mongoose');
 const omit = require('lodash/omit');
 
-const UserSchema = new Schema(
+const GroupSchema = new Schema(
     {
-        email: {
-            type: String,
-            unique: true,
+        master: {
+            type: Types.ObjectId,
             required: true,
         },
         name: {
             type: String,
-            maxlength: 24,
-        },
-        password: {
-            type: String,
             required: true,
-            maxlength: 60,
+            maxlength: 24,
         },
         // 图片 md5 值
         avatar: {
             type: String,
             maxlength: 40,
         },
-        friends: {
-            type: [Types.ObjectId],
-        },
-        groups: {
+        members: {
             type: [Types.ObjectId],
         },
     },
@@ -37,18 +29,10 @@ const UserSchema = new Schema(
                     ret.avatar = `/public/images/avatar/${ret.avatar}`;
                 }
                 ret.id = ret._id;
-                return omit(ret, [
-                    '_id',
-                    'createdAt',
-                    'updatedAt',
-                    '__v',
-                    'password',
-                    'friends',
-                    'groups',
-                ]);
+                return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'members']);
             },
         },
     },
 );
 
-module.exports = model('User', UserSchema);
+module.exports = model('Group', GroupSchema);

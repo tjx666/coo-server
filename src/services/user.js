@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Boom = require('@hapi/boom');
 
-const { User } = require('../models');
+const { User, Group } = require('../models');
 const configs = require('../../configs');
 
 /**
@@ -128,9 +128,7 @@ async function findAllFriend(id) {
         throw Boom.badRequest('no this user!');
     }
 
-    const friends = await User.find({})
-        .where('_id')
-        .in(user.friends);
+    const friends = await User.find({}).where('_id').in(user.friends);
     return friends;
 }
 
@@ -186,6 +184,16 @@ async function deleteFriend(from, target) {
     await targetUser.save();
 }
 
+async function findAllJoinedGroups(id) {
+    const user = await findOneById(id);
+    if (user === null) {
+        throw Boom.badRequest('no this user!');
+    }
+
+    const groups = await Group.find({}).where('_id').in(user.groups);
+    return groups;
+}
+
 module.exports = {
     generateJWT,
     findOneById,
@@ -197,4 +205,5 @@ module.exports = {
     updateOneById,
     addNewFriend,
     deleteFriend,
+    findAllJoinedGroups,
 };

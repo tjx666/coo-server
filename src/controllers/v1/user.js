@@ -14,9 +14,7 @@ async function register(ctx, next) {
     const schema = Joi.object({
         email: Joi.string().required(),
         name: Joi.string().required(),
-        password: Joi.string()
-            .max(60)
-            .required(),
+        password: Joi.string().max(60).required(),
     });
     await ctx.validateAsync(schema);
 
@@ -30,9 +28,7 @@ async function register(ctx, next) {
 async function login(ctx, next) {
     const schema = Joi.object({
         email: Joi.string().required(),
-        password: Joi.string()
-            .max(60)
-            .required(),
+        password: Joi.string().max(60).required(),
     });
     await ctx.validateAsync(schema);
 
@@ -53,7 +49,7 @@ async function login(ctx, next) {
 
 async function getUsers(ctx, next) {
     const users = await userService.findAllUsers();
-    ctx.restify(users.map(user => user.toObject()));
+    ctx.restify(users.map((user) => user.toObject()));
     await next();
 }
 
@@ -115,7 +111,7 @@ async function getFriends(ctx, next) {
     await ctx.validateAsync(paramsSchema, 'params');
 
     const friends = await userService.findAllFriend(ctx.params.id);
-    ctx.restify(friends.map(friend => friend.toObject()));
+    ctx.restify(friends.map((friend) => friend.toObject()));
 
     await next();
 }
@@ -150,6 +146,16 @@ async function searchUserByEmail(ctx, next) {
     await next();
 }
 
+async function getGroups(ctx, next) {
+    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    await ctx.validateAsync(paramsSchema, 'params');
+
+    const groups = await userService.findAllJoinedGroups(ctx.params.id);
+    ctx.restify(groups.map((group) => group.toObject()));
+
+    await next();
+}
+
 module.exports = {
     register,
     login,
@@ -161,4 +167,5 @@ module.exports = {
     applyForNewFriend,
     removeFriend,
     searchUserByEmail,
+    getGroups,
 };

@@ -4,6 +4,7 @@ exports.server = {
     // 最大上传图片大小为 10 兆
     maxAvatarSize: 1024 * 1024 * 5,
     maxMessageImageSize: 1024 * 1024 * 2,
+    maxGroupCountPerUser: 10,
     apiVersion: 'v1',
 };
 
