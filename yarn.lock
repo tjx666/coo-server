@@ -460,9 +460,9 @@ browser-stdout@1.3.1:
   integrity sha1-uqVZ7hTO1zRSIputcyZGfGH6vWA=
 
 bson@^1.1.1, bson@~1.1.1:
-  version "1.1.3"
-  resolved "https://registry.npm.taobao.org/bson/download/bson-1.1.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbson%2Fdownload%2Fbson-1.1.3.tgz#aa82cb91f9a453aaa060d6209d0675114a8154d3"
-  integrity sha1-qoLLkfmkU6qgYNYgnQZ1EUqBVNM=
+  version "1.1.4"
+  resolved "https://registry.npm.taobao.org/bson/download/bson-1.1.4.tgz?cache=0&sync_timestamp=1585051208001&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbson%2Fdownload%2Fbson-1.1.4.tgz#f76870d799f15b854dffb7ee32f0a874797f7e89"
+  integrity sha1-92hw15nxW4VN/7fuMvCodHl/fok=
 
 buffer-equal-constant-time@1.0.1:
   version "1.0.1"
@@ -2044,7 +2044,7 @@ globals@^12.1.0:
 
 got@^6.7.1:
   version "6.7.1"
-  resolved "https://registry.npm.taobao.org/got/download/got-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
+  resolved "https://registry.npm.taobao.org/got/download/got-6.7.1.tgz?cache=0&sync_timestamp=1585075191797&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgot%2Fdownload%2Fgot-6.7.1.tgz#240cd05785a9a18e561dc1b44b41c763ef1e8db0"
   integrity sha1-JAzQV4WpoY5WHcG0S0HHY+8ejbA=
   dependencies:
     create-error-class "^3.0.0"
@@ -2125,10 +2125,10 @@ helmet-crossdomain@0.4.0:
   resolved "https://registry.npm.taobao.org/helmet-crossdomain/download/helmet-crossdomain-0.4.0.tgz#5f1fe5a836d0325f1da0a78eaa5fd8429078894e"
   integrity sha1-Xx/lqDbQMl8doKeOql/YQpB4iU4=
 
-helmet-csp@2.9.5:
-  version "2.9.5"
-  resolved "https://registry.npm.taobao.org/helmet-csp/download/helmet-csp-2.9.5.tgz#ea1ebec6d481e8f9aa5f48cc4ca2714e031f627d"
-  integrity sha1-6h6+xtSB6PmqX0jMTKJxTgMfYn0=
+helmet-csp@2.10.0:
+  version "2.10.0"
+  resolved "https://registry.npm.taobao.org/helmet-csp/download/helmet-csp-2.10.0.tgz#685dde1747bc16c5e28ad9d91e229a69f0a85e84"
+  integrity sha1-aF3eF0e8FsXiitnZHiKaafCoXoQ=
   dependencies:
     bowser "2.9.0"
     camelize "1.0.0"
@@ -2136,9 +2136,9 @@ helmet-csp@2.9.5:
     dasherize "2.0.0"
 
 helmet@^3.21.1:
-  version "3.21.3"
-  resolved "https://registry.npm.taobao.org/helmet/download/helmet-3.21.3.tgz#15777aae82a4d2678c104fd18195a4012f429b67"
-  integrity sha1-FXd6roKk0meMEE/RgZWkAS9Cm2c=
+  version "3.22.0"
+  resolved "https://registry.npm.taobao.org/helmet/download/helmet-3.22.0.tgz#3a6f11d931799145f0aff15dbc563cff9e13131f"
+  integrity sha1-Om8R2TF5kUXwr/FdvFY8/54TEx8=
   dependencies:
     depd "2.0.0"
     dns-prefetch-control "0.2.0"
@@ -2147,7 +2147,7 @@ helmet@^3.21.1:
     feature-policy "0.3.0"
     frameguard "3.1.0"
     helmet-crossdomain "0.4.0"
-    helmet-csp "2.9.5"
+    helmet-csp "2.10.0"
     hide-powered-by "1.1.0"
     hpkp "2.0.0"
     hsts "2.2.0"
@@ -2637,10 +2637,10 @@ keygrip@~1.1.0:
   dependencies:
     tsscmp "1.0.6"
 
-koa-bodyparser@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.npm.taobao.org/koa-bodyparser/download/koa-bodyparser-4.2.1.tgz#4d7dacb5e6db1106649b595d9e5ccb158b6f3b29"
-  integrity sha1-TX2stebbEQZkm1ldnlzLFYtvOyk=
+koa-bodyparser@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.npm.taobao.org/koa-bodyparser/download/koa-bodyparser-4.3.0.tgz#274c778555ff48fa221ee7f36a9fbdbace22759a"
+  integrity sha1-J0x3hVX/SPoiHufzap+9us4idZo=
   dependencies:
     co-body "^6.0.0"
     copy-to "^2.0.1"
@@ -2776,10 +2776,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npm.taobao.org/lines-and-columns/download/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
-lint-staged@^10.0.8:
-  version "10.0.8"
-  resolved "https://registry.npm.taobao.org/lint-staged/download/lint-staged-10.0.8.tgz#0f7849cdc336061f25f5d4fcbcfa385701ff4739"
-  integrity sha1-D3hJzcM2Bh8l9dT8vPo4VwH/Rzk=
+lint-staged@^10.0.9:
+  version "10.0.9"
+  resolved "https://registry.npm.taobao.org/lint-staged/download/lint-staged-10.0.9.tgz#185aabb2432e9467c84add306c990f1c20da3cdb"
+  integrity sha1-GFqrskMulGfISt0wbJkPHCDaPNs=
   dependencies:
     chalk "^3.0.0"
     commander "^4.0.1"
@@ -3167,7 +3167,7 @@ mongoose@^5.9.5:
 
 mpath@0.6.0:
   version "0.6.0"
-  resolved "https://registry.npm.taobao.org/mpath/download/mpath-0.6.0.tgz#aa922029fca4f0f641f360e74c5c1b6a4c47078e"
+  resolved "https://registry.npm.taobao.org/mpath/download/mpath-0.6.0.tgz?cache=0&sync_timestamp=1585081549987&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmpath%2Fdownload%2Fmpath-0.6.0.tgz#aa922029fca4f0f641f360e74c5c1b6a4c47078e"
   integrity sha1-qpIgKfyk8PZB82DnTFwbakxHB44=
 
 mquery@3.2.2:
@@ -3922,9 +3922,9 @@ punycode@^2.1.0:
   integrity sha1-tYsBCsQMIsVldhbI0sLALHv0eew=
 
 qs@^6.5.1, qs@^6.5.2:
-  version "6.9.2"
-  resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.2.tgz#a27b695006544a04bf0e6c6a7e8120778926d5bd"
-  integrity sha1-ontpUAZUSgS/DmxqfoEgd4km1b0=
+  version "6.9.3"
+  resolved "https://registry.npm.taobao.org/qs/download/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
+  integrity sha1-v63NKWwtVJ8d/6VgYZEyyXf1AI4=
 
 ramda@^0.27.0:
   version "0.27.0"

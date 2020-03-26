@@ -52,5 +52,6 @@ module.exports = {
         'no-underscore-dangle': OFF,
         'no-unused-expressions': OFF,
         'no-unused-vars': OFF,
+        'prefer-const': [ERROR, { destructuring: 'all' }],
     },
 };

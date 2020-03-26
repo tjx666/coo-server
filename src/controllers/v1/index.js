@@ -31,6 +31,12 @@ router.post('search/user', userController.searchUserByEmail);
 router.post('messages/private/text', messageController.sendPrivateTextMessage);
 router.post('messages/private/image', messageController.sendPrivateImageMessage);
 
+// group
 router.post('groups', groupController.createGroup);
+router.post('groups/apply', groupController.applyForGroup);
+router.post('groups/exit', groupController.exitGroup);
+router.post('groups/disband', groupController.disbandGroup);
+
+router.post('search/group', groupController.searchGroupById);
 
 module.exports = router;

@@ -52,7 +52,7 @@
         "intelli-espower-loader": "^1.0.1",
         "jsonwebtoken": "^8.5.1",
         "koa": "^2.11.0",
-        "koa-bodyparser": "^4.2.1",
+        "koa-bodyparser": "^4.3.0",
         "koa-compose": "^4.1.0",
         "koa-helmet": "^5.2.0",
         "koa-jwt": "^3.6.0",
@@ -83,7 +83,7 @@
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-unicorn": "^17.2.0",
         "husky": "^4.2.3",
-        "lint-staged": "^10.0.8",
+        "lint-staged": "^10.0.9",
         "nodemon": "^2.0.2",
         "prettier": "^2.0.1"
     }

@@ -20,7 +20,7 @@ async function register(ctx, next) {
 
     const userDto = ctx.request.body;
     await userService.createUser(userDto);
-    ctx.restify({}, 'register success!');
+    ctx.restify({}, 'register success!', 201);
 
     await next();
 }
@@ -140,8 +140,11 @@ async function searchUserByEmail(ctx, next) {
     const schema = Joi.object({ email: Joi.string().required() });
     await ctx.validateAsync(schema);
 
-    const user = await userService.findOneByEmail(ctx.request.query.email);
-    ctx.restify(user ? user.toObject() : {});
+    const user = await userService.findOneByEmail(ctx.request.body.email);
+    ctx.restify({
+        existed: !!user,
+        user: user ? user.toObject() : {},
+    });
 
     await next();
 }

@@ -4,11 +4,6 @@ const { Group } = require('../models');
 const userService = require('./user');
 const config = require('../../configs');
 
-/**
- *
- * @param {string} master 群主 id
- * @param {string} name 群名称
- */
 async function createGroup(master, name) {
     const masterUser = await userService.findOneById(master);
     if (!masterUser) {
@@ -19,7 +14,7 @@ async function createGroup(master, name) {
         throw Boom.forbidden(`user had already created max count groups`, { code: 3 });
     }
 
-    const newGroup = new Group({ master, name });
+    const newGroup = new Group({ master, name, members: [master] });
     masterUser.groups.push(newGroup._id);
     await masterUser.save();
     return newGroup.save();
@@ -29,7 +24,50 @@ async function findGroupById(id) {
     return Group.findOne({ _id: id });
 }
 
+async function applyForGroup(userId, groupId) {
+    const user = await userService.findOneById(userId);
+    if (user.groups.includes(groupId)) {
+        throw Boom.badRequest('user had been the member of group!', { data: { code: 2 } });
+    }
+    user.groups.push(groupId);
+    await user.save();
+
+    const group = await findGroupById(groupId);
+    group.members.push(userId);
+    await group.save();
+}
+
+async function exitGroup(userId, groupId) {
+    const user = await userService.findOneById(userId);
+    const groupIndex = user.groups.findIndex((gid) => gid === groupId);
+    user.groups.splice(groupIndex, 1);
+    await user.save();
+
+    const group = await findGroupById(groupId);
+    const userIndex = group.members.findIndex((uid) => uid === userId);
+    group.members.splice(userIndex, 1);
+    await group.save();
+}
+
+async function disbandGroup(master, groupId) {
+    const group = await findGroupById(groupId);
+    await Promise.all(
+        group.members.map((uid) => {
+            return (async () => {
+                const user = await userService.findOneById(uid);
+                const disbandedGroupIndex = user.groups.findIndex((gid) => gid === groupId);
+                user.groups.splice(disbandedGroupIndex, 1);
+                await user.save;
+            })();
+        }),
+    );
+    await Group.deleteOne({ _id: groupId });
+}
+
 module.exports = {
     createGroup,
     findGroupById,
+    applyForGroup,
+    disbandGroup,
+    exitGroup,
 };

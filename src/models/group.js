@@ -29,6 +29,7 @@ const GroupSchema = new Schema(
                     ret.avatar = `/public/images/avatar/${ret.avatar}`;
                 }
                 ret.id = ret._id;
+                ret.count = ret.members.length;
                 return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'members']);
             },
         },
