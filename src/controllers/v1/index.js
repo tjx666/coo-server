@@ -1,8 +1,8 @@
 const Router = require('@koa/router');
 
 const userController = require('./user');
-const messageController = require('./message');
 const groupController = require('./group');
+const messageController = require('./message');
 
 const router = new Router({ prefix: '/api/v1/' });
 
@@ -23,6 +23,14 @@ router.delete('users/:id/friends', userController.removeFriend);
 
 router.post('search/user', userController.searchUserByEmail);
 
+// group
+router.post('groups', groupController.createGroup);
+router.post('groups/apply', groupController.applyForGroup);
+router.post('groups/exit', groupController.exitGroup);
+router.post('groups/disband', groupController.disbandGroup);
+
+router.post('search/group', groupController.searchGroupById);
+
 /**
  * 消息相关 API
  * url 形式： messages/:situation/:contentType
@@ -32,13 +40,5 @@ router.post('messages/private/text', messageController.sendPrivateTextMessage);
 router.post('messages/private/image', messageController.sendPrivateImageMessage);
 router.post('messages/group/text', messageController.sendGroupTextMessage);
 router.post('messages/group/image', messageController.sendGroupImageMessage);
-
-// group
-router.post('groups', groupController.createGroup);
-router.post('groups/apply', groupController.applyForGroup);
-router.post('groups/exit', groupController.exitGroup);
-router.post('groups/disband', groupController.disbandGroup);
-
-router.post('search/group', groupController.searchGroupById);
 
 module.exports = router;

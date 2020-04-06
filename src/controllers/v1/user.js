@@ -5,21 +5,22 @@ const Boom = require('@hapi/boom');
 const multer = require('@koa/multer');
 const compose = require('koa-compose');
 
-const { userService } = require('../../services');
 const config = require('../../../configs');
-const { md5 } = require('../../../utils/crypt');
+const { userService } = require('../../services');
 const { PROJECT_ROOT } = require('../../../utils/constants');
+const { md5 } = require('../../../utils/crypt');
 
 async function register(ctx, next) {
     const schema = Joi.object({
         email: Joi.string().required(),
-        name: Joi.string().required(),
-        password: Joi.string().max(60).required(),
+        name: Joi.string().max(24).required(),
+        // !: 用户密码长度限制 18位
+        password: Joi.string().max(18).required(),
     });
     await ctx.validateAsync(schema);
 
-    const userDto = ctx.request.body;
-    await userService.createUser(userDto);
+    const registerInfo = ctx.request.body;
+    await userService.createUser(registerInfo);
     ctx.restify({}, 'register success!', 201);
 
     await next();
@@ -28,7 +29,7 @@ async function register(ctx, next) {
 async function login(ctx, next) {
     const schema = Joi.object({
         email: Joi.string().required(),
-        password: Joi.string().max(60).required(),
+        password: Joi.string().max(18).required(),
     });
     await ctx.validateAsync(schema);
 
@@ -54,12 +55,12 @@ async function getUsers(ctx, next) {
 }
 
 async function getUserById(ctx, next) {
-    const schema = Joi.object({ id: Joi.string().required() });
+    const schema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(schema, 'params');
 
     const user = await userService.findOneById(ctx.params.id);
     if (user === null) {
-        throw Boom.notFound();
+        throw Boom.badRequest('No user match the user id', { code: 1 });
     } else {
         ctx.restify(user.toObject());
     }
@@ -67,8 +68,21 @@ async function getUserById(ctx, next) {
     await next();
 }
 
+async function searchUserByEmail(ctx, next) {
+    const schema = Joi.object({ email: Joi.string().required() });
+    await ctx.validateAsync(schema);
+
+    const user = await userService.findOneByEmail(ctx.request.body.email);
+    ctx.restify({
+        existed: !!user,
+        user: user ? user.toObject() : {},
+    });
+
+    await next();
+}
+
 async function updateUserById(ctx, next) {
-    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    const paramsSchema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(paramsSchema, 'params');
 
     const bodySchema = Joi.object({ name: Joi.string(), password: Joi.string().allow('') });
@@ -87,7 +101,7 @@ const multerForAvatar = multer({
 });
 const uploadAvatar = compose([
     async (ctx, next) => {
-        const schema = Joi.object({ id: Joi.string().required() });
+        const schema = Joi.object({ id: Joi.string().length(24).required() });
         await ctx.validateAsync(schema, 'params');
         await next();
     },
@@ -107,7 +121,7 @@ const uploadAvatar = compose([
 ]);
 
 async function getFriends(ctx, next) {
-    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    const paramsSchema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(paramsSchema, 'params');
 
     const friends = await userService.findAllFriend(ctx.params.id);
@@ -117,40 +131,29 @@ async function getFriends(ctx, next) {
 }
 
 async function applyForNewFriend(ctx, next) {
-    const schema = Joi.object({ id: Joi.string().required() });
+    const schema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(schema);
     await ctx.validateAsync(schema, 'params');
 
     await userService.addNewFriend(ctx.params.id, ctx.request.body.id);
     await ctx.restify({}, 'apply for friend success!');
+
     await next();
 }
 
 async function removeFriend(ctx, next) {
-    const schema = Joi.object({ id: Joi.string().required() });
+    const schema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(schema);
     await ctx.validateAsync(schema, 'params');
 
     await userService.deleteFriend(ctx.params.id, ctx.request.body.id);
     await ctx.restify({}, 'remove friend success!');
-    await next();
-}
-
-async function searchUserByEmail(ctx, next) {
-    const schema = Joi.object({ email: Joi.string().required() });
-    await ctx.validateAsync(schema);
-
-    const user = await userService.findOneByEmail(ctx.request.body.email);
-    ctx.restify({
-        existed: !!user,
-        user: user ? user.toObject() : {},
-    });
 
     await next();
 }
 
 async function getGroups(ctx, next) {
-    const paramsSchema = Joi.object({ id: Joi.string().required() });
+    const paramsSchema = Joi.object({ id: Joi.string().length(24).required() });
     await ctx.validateAsync(paramsSchema, 'params');
 
     const groups = await userService.findAllJoinedGroups(ctx.params.id);
@@ -164,11 +167,11 @@ module.exports = {
     login,
     getUsers,
     getUserById,
+    searchUserByEmail,
     updateUserById,
     uploadAvatar,
     getFriends,
     applyForNewFriend,
     removeFriend,
-    searchUserByEmail,
     getGroups,
 };

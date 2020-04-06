@@ -3,6 +3,7 @@ const omit = require('lodash/omit');
 
 const GroupSchema = new Schema(
     {
+        // 群主 id
         master: {
             type: Types.ObjectId,
             required: true,
@@ -30,7 +31,7 @@ const GroupSchema = new Schema(
                 }
                 ret.id = ret._id;
                 ret.count = ret.members.length;
-                return omit(ret, ['_id', 'createdAt', 'updatedAt', '__v', 'members']);
+                return omit(ret, ['_id', '__v', 'createdAt', 'updatedAt', 'members']);
             },
         },
     },

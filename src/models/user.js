@@ -29,6 +29,7 @@ const UserSchema = new Schema(
         // 图片 md5 值
         avatar: {
             type: String,
+            // md5 是 32 位，也就是说限制点号后面的后缀名长度为7位
             maxlength: 40,
         },
         // 好友 ObjectId 数组
@@ -51,9 +52,9 @@ const UserSchema = new Schema(
                 ret.id = ret._id;
                 return omit(ret, [
                     '_id',
+                    '__v',
                     'createdAt',
                     'updatedAt',
-                    '__v',
                     'password',
                     'friends',
                     'groups',

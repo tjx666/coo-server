@@ -5,15 +5,15 @@ const compose = require('koa-compose');
 const Joi = require('@hapi/joi');
 const Boom = require('@hapi/boom');
 
-const { messageService, groupService, userService } = require('../../services');
 const config = require('../../../configs');
-const { md5 } = require('../../../utils/crypt');
+const { messageService, groupService, userService } = require('../../services');
 const { PROJECT_ROOT } = require('../../../utils/constants');
+const { md5 } = require('../../../utils/crypt');
 
 async function sendPrivateTextMessage(ctx, next) {
     const schema = Joi.object({
-        from: Joi.string().required(),
-        to: Joi.string().required(),
+        from: Joi.string().length(24).required(),
+        to: Joi.string().length(24).required(),
         content: Joi.string().required(),
     });
     await ctx.validateAsync(schema);
@@ -28,11 +28,11 @@ async function sendPrivateTextMessage(ctx, next) {
             {
                 from,
                 situation: 'private',
-                content,
                 contentType: 'text',
+                content,
                 createdAt: newMessage.createdAt,
             },
-            (data) => {
+            (_data) => {
                 newMessage.status = 'received';
                 newMessage.save();
             },
@@ -51,7 +51,10 @@ const multerForImageMessage = multer({
 });
 const sendPrivateImageMessage = compose([
     async (ctx, next) => {
-        const schema = Joi.object({ from: Joi.string().required(), to: Joi.string().required() });
+        const schema = Joi.object({
+            from: Joi.string().length(24).required(),
+            to: Joi.string().length(24).required(),
+        });
         await ctx.validateAsync(schema, 'query');
         await next();
     },
@@ -75,11 +78,11 @@ const sendPrivateImageMessage = compose([
                 {
                     from,
                     situation: 'private',
-                    content: imageAddress,
                     contentType: 'image',
+                    content: imageAddress,
                     createdAt: newMessage.createdAt,
                 },
-                (data) => {
+                (_data) => {
                     newMessage.status = 'received';
                     newMessage.save();
                 },
@@ -93,8 +96,8 @@ const sendPrivateImageMessage = compose([
 
 async function sendGroupTextMessage(ctx, next) {
     const schema = Joi.object({
-        from: Joi.string().required(),
-        to: Joi.string().required(),
+        from: Joi.string().length(24).required(),
+        to: Joi.string().length(24).required(),
         content: Joi.string().required(),
     });
     await ctx.validateAsync(schema);
@@ -120,8 +123,8 @@ async function sendGroupTextMessage(ctx, next) {
                 fromUser: fromUser.toObject(),
                 groupId: to,
                 situation: 'group',
-                content,
                 contentType: 'text',
+                content,
                 createdAt: newMessage.createdAt,
             });
         }
@@ -135,7 +138,10 @@ async function sendGroupTextMessage(ctx, next) {
 
 const sendGroupImageMessage = compose([
     async (ctx, next) => {
-        const schema = Joi.object({ from: Joi.string().required(), to: Joi.string().required() });
+        const schema = Joi.object({
+            from: Joi.string().length(24).required(),
+            to: Joi.string().length(24).required(),
+        });
         await ctx.validateAsync(schema, 'query');
         await next();
     },
@@ -168,8 +174,8 @@ const sendGroupImageMessage = compose([
                     fromUser: fromUser.toObject(),
                     groupId: to,
                     situation: 'group',
-                    content: imageAddress,
                     contentType: 'image',
+                    content: imageAddress,
                     createdAt: newMessage.createdAt,
                 });
             }
