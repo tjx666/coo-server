@@ -14,14 +14,20 @@ module.exports = async function socketIo(app, server) {
     const sockets = new Map([]);
     app.context.sockets = sockets;
 
-    io.on('connection', socket => {
+    let autoIncrement = 0;
+    io.on('connection', (socket) => {
         const { id } = socket.handshake.query;
-        console.log(`user ${id} connected!`);
+        // eslint-disable-next-line no-plusplus
+        ++autoIncrement;
+        const connectionId = autoIncrement;
+        console.log(`[${connectionId}] user ${id} connected!`);
         sockets.set(id, socket);
 
-        socket.on('disconnect', reason => {
-            sockets.delete(id);
-            console.log(`user ${id} disconnected!`);
+        socket.on('disconnect', (reason) => {
+            if (sockets.get(id) === socket) {
+                sockets.delete(id);
+            }
+            console.log(`[${connectionId}] user ${id} disconnected!`);
         });
     });
 };

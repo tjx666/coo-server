@@ -45,7 +45,7 @@
         "@koa/multer": "^2.0.2",
         "@koa/router": "^8.0.8",
         "bcrypt": "4.0.1",
-        "chalk": "^3.0.0",
+        "chalk": "^4.0.0",
         "cross-env": "^7.0.2",
         "fs-extra": "^9.0.0",
         "get-port": "^5.1.1",
@@ -63,13 +63,13 @@
         "log-symbols": "^3.0.0",
         "log4js": "^6.1.2",
         "mocha": "^7.1.1",
-        "mongoose": "^5.9.5",
+        "mongoose": "^5.9.7",
         "multer": "^1.4.2",
         "power-assert": "^1.6.1",
         "rimraf": "^3.0.2",
         "socket.io": "^2.3.0",
         "supertest": "^4.0.2",
-        "uuid": "^7.0.2"
+        "uuid": "^7.0.3"
     },
     "devDependencies": {
         "audit-ci": "^2.5.1",
@@ -77,14 +77,14 @@
         "eslint-config-airbnb-base": "^14.1.0",
         "eslint-config-prettier": "^6.10.1",
         "eslint-plugin-eslint-comments": "^3.1.2",
-        "eslint-plugin-import": "^2.20.1",
+        "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-mocha": "^6.3.0",
-        "eslint-plugin-node": "^11.0.0",
+        "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-unicorn": "^17.2.0",
+        "eslint-plugin-unicorn": "^18.0.1",
         "husky": "^4.2.3",
-        "lint-staged": "^10.0.9",
+        "lint-staged": "^10.1.2",
         "nodemon": "^2.0.2",
-        "prettier": "^2.0.1"
+        "prettier": "^2.0.4"
     }
 }

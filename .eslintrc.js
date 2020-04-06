@@ -36,7 +36,7 @@ module.exports = {
 
         'unicorn/prevent-abbreviations': OFF,
         'unicorn/filename-case': [
-            'error',
+            ERROR,
             {
                 cases: {
                     camelCase: true,
@@ -49,6 +49,7 @@ module.exports = {
         'global-require': OFF,
         'no-console': OFF,
         'no-param-reassign': OFF,
+        'no-plusplus': OFF,
         'no-underscore-dangle': OFF,
         'no-unused-expressions': OFF,
         'no-unused-vars': OFF,

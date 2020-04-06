@@ -30,6 +30,8 @@ router.post('search/user', userController.searchUserByEmail);
  */
 router.post('messages/private/text', messageController.sendPrivateTextMessage);
 router.post('messages/private/image', messageController.sendPrivateImageMessage);
+router.post('messages/group/text', messageController.sendGroupTextMessage);
+router.post('messages/group/image', messageController.sendGroupImageMessage);
 
 // group
 router.post('groups', groupController.createGroup);

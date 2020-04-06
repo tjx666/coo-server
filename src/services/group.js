@@ -15,9 +15,10 @@ async function createGroup(master, name) {
     }
 
     const newGroup = new Group({ master, name, members: [master] });
+    await newGroup.save();
+
     masterUser.groups.push(newGroup._id);
     await masterUser.save();
-    return newGroup.save();
 }
 
 async function findGroupById(id) {
@@ -26,9 +27,14 @@ async function findGroupById(id) {
 
 async function applyForGroup(userId, groupId) {
     const user = await userService.findOneById(userId);
-    if (user.groups.includes(groupId)) {
-        throw Boom.badRequest('user had been the member of group!', { data: { code: 2 } });
+    if (!user) {
+        throw Boom.badRequest('user not existed', { data: { code: 2 } });
     }
+
+    if (user.groups.includes(groupId)) {
+        throw Boom.badRequest('user had been the member of group!', { data: { code: 3 } });
+    }
+
     user.groups.push(groupId);
     await user.save();
 
@@ -39,7 +45,14 @@ async function applyForGroup(userId, groupId) {
 
 async function exitGroup(userId, groupId) {
     const user = await userService.findOneById(userId);
+    if (!user) {
+        throw Boom.badRequest('user not existed', { data: { code: 2 } });
+    }
+
     const groupIndex = user.groups.findIndex((gid) => gid === groupId);
+    if (groupIndex === -1) {
+        throw Boom.badRequest('user not in the group', { data: { code: 3 } });
+    }
     user.groups.splice(groupIndex, 1);
     await user.save();
 
