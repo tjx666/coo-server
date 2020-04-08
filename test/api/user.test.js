@@ -18,7 +18,7 @@ describe('#user API', () => {
                 .post(registerURL)
                 .send({ email: 'a@b.com', password: '666' })
                 .expect(400, {
-                    code: 1,
+                    code: -1,
                     msg: `"name" is required`,
                 });
         });

@@ -1,17 +1,16 @@
 module.exports = function restifyHelper(app) {
     app.context.restify = function (data = {}, msg = 'success', status) {
-        const { method } = this.request;
-        this.response.body = {
+        const ctx = this;
+        const { method } = ctx.request;
+        ctx.body = {
             code: 0,
             msg,
             data: method === 'DELETE' ? {} : data,
         };
 
-        const statusMapper = {
-            DELETE: 204,
-        };
+        const methodStatusMapper = new Map([['DELETE', 204]]);
         if (!status) {
-            status = statusMapper[method] || 200;
+            status = methodStatusMapper.get(method) || 200;
         }
         this.status = status;
     };

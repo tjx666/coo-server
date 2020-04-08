@@ -16,14 +16,14 @@ module.exports = async function socketIo(app, server) {
     const sockets = new Map();
     app.context.sockets = sockets;
 
-    let autoIncrement = 0;
+    let connectionId = 0;
     io.on('connection', (socket) => {
         const { id } = socket.handshake.query;
         sockets.set(id, socket);
 
-        ++autoIncrement;
-        const connectionId = autoIncrement;
-        const socketIdStr = chalk.bgBlue.black(` ${connectionId} `);
+        ++connectionId;
+        const currentConnectionId = connectionId;
+        const socketIdStr = chalk.bgBlue.black(` ${currentConnectionId} `);
         const userIdStr = chalk.green(id);
         appLogger.info(`${socketIdStr} user ${userIdStr} connected!`);
 

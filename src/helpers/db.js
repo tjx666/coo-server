@@ -5,8 +5,8 @@ const logSymbols = require('log-symbols');
 const configs = require('../../configs');
 
 module.exports = async function dbHelper(app) {
-    const { address, connectOptions } = configs.db;
     const { appLogger } = app;
+    const { address, connectOptions } = configs.db;
     const colorizedAddr = chalk.green.underline(address);
 
     try {
@@ -28,7 +28,7 @@ module.exports = async function dbHelper(app) {
         );
     });
 
-    db.on('error', err => {
+    db.on('error', (err) => {
         appLogger.error('MongoDB occurred error!');
         appLogger.error(err);
     });
